@@ -35,10 +35,11 @@ class _HomePageState extends State<HomePage> {
   TextEditingController eventNameController = TextEditingController();
   TextEditingController detailController = TextEditingController();
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  // }
+  @override
+  void initState() {
+    _getEventAttendance();
+    super.initState();
+  }
 
   void _getEventAttendance() async {
     var data = {"username": widget.userdata['username']};
@@ -47,7 +48,15 @@ class _HomePageState extends State<HomePage> {
         await CallApi().postData(data, 'event/camp/attendance/');
     var bodyDataAttendance = json.decode(resDataAttendance.body);
 
+    var resHomepage = await CallApi().getData('event/get_all_event/');
+    var bodyHomepage = json.decode(resHomepage.body);
+
+    SharedPreferences localStorage = await SharedPreferences.getInstance();
+    localStorage.setString('data', json.encode(bodyHomepage));
+    localStorage.setString('attendance', json.encode(bodyDataAttendance));
+
     setState(() {
+      widget.data = bodyHomepage;
       widget.eventAttendance = bodyDataAttendance;
     });
   }
@@ -95,182 +104,205 @@ class _HomePageState extends State<HomePage> {
   Widget dataAttendance() {
     return (_Page == 0)
         ? Expanded(
-            child: CustomScrollView(primary: false, slivers: <Widget>[
-            SliverList(
-                delegate: SliverChildListDelegate(
-                    List<Widget>.generate(widget.data.length, (index) {
-              return Container(
-                  child: Column(
-                children: <Widget>[
-                  Card(
-                      margin:
-                          EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20)),
-                      elevation: 3.5,
-                      child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Stack(
-                              children: <Widget>[
-                                SizedBox(
-                                  child: InkWell(
-                                      splashColor: Colors.amberAccent,
-                                      borderRadius: BorderRadius.only(
-                                          topLeft: Radius.circular(20),
-                                          bottomLeft: Radius.circular(20),
-                                          topRight: Radius.circular(20),
-                                          bottomRight: Radius.circular(20)),
-                                      child: Row(
-                                        children: <Widget>[
-                                          Container(
-                                            // color: Colors.red,
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                0.4885,
-                                            height: 200,
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: <Widget>[
-                                                Padding(
-                                                  padding: EdgeInsets.fromLTRB(
-                                                      15, 7, 0, 0),
-                                                  child: Text(
-                                                      (index + 1).toString(),
-                                                      style: TextStyle(
-                                                          fontSize: 10,
-                                                          fontWeight:
-                                                              FontWeight.w200)),
-                                                ),
-                                                Padding(
-                                                  padding: EdgeInsets.fromLTRB(
-                                                      20, 0, 0, 0),
-                                                  child: Text(
-                                                      widget.data[index]
-                                                          ['event_name'],
-                                                      style: TextStyle(
-                                                          fontSize: 16,
-                                                          fontWeight:
-                                                              FontWeight.bold)),
-                                                ),
-                                                Padding(
-                                                  padding: EdgeInsets.fromLTRB(
-                                                      20, 0, 0, 0),
-                                                  child: Text(
-                                                      (widget
-                                                                  .data[index]
-                                                                      ['detail']
-                                                                  .length >
-                                                              40)
-                                                          ? widget.data[index]
-                                                                      ['detail']
-                                                                  .substring(
-                                                                      0, 40) +
-                                                              "..."
-                                                          : widget.data[index]
-                                                              ['detail'],
-                                                      style: TextStyle(
-                                                          fontSize: 12,
-                                                          fontWeight: FontWeight
-                                                              .normal)),
-                                                ),
-                                                // _isLoading
-                                                // ? Container(
-                                                //   // color: Colors.green,
-                                                //   padding: EdgeInsets.fromLTRB(10, 20, 0, 0),
-                                                //   child: Center(child: CircularProgressIndicator(),),
-                                                // )
-                                                // : Container(),
-                                              ],
-                                            ),
-                                          ),
-                                          Container(
-                                            // color: Colors.amber,
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                0.4,
-                                            height: 200,
-                                            child: Row(
-                                              children: <Widget>[
-                                                Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.center,
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceEvenly,
-                                                  children: <Widget>[
-                                                    ClipRRect(
-                                                        borderRadius:
-                                                            BorderRadius.only(
-                                                                topRight: Radius
-                                                                    .circular(
-                                                                        8),
-                                                                bottomRight:
-                                                                    Radius
+            child: widget.data != null
+                ? CustomScrollView(primary: false, slivers: <Widget>[
+                    SliverList(
+                        delegate: SliverChildListDelegate(
+                            List<Widget>.generate(widget.data.length, (index) {
+                      return Container(
+                          child: Column(
+                        children: <Widget>[
+                          Card(
+                              margin: EdgeInsets.symmetric(
+                                  vertical: 10, horizontal: 20),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20)),
+                              elevation: 3.5,
+                              child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: <Widget>[
+                                    Stack(
+                                      children: <Widget>[
+                                        SizedBox(
+                                          child: InkWell(
+                                              splashColor: Colors.amberAccent,
+                                              borderRadius: BorderRadius.only(
+                                                  topLeft: Radius.circular(20),
+                                                  bottomLeft:
+                                                      Radius.circular(20),
+                                                  topRight: Radius.circular(20),
+                                                  bottomRight:
+                                                      Radius.circular(20)),
+                                              child: Row(
+                                                children: <Widget>[
+                                                  Container(
+                                                    // color: Colors.red,
+                                                    width:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .width *
+                                                            0.4885,
+                                                    height: 200,
+                                                    child: Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: <Widget>[
+                                                        Padding(
+                                                          padding: EdgeInsets
+                                                              .fromLTRB(
+                                                                  15, 7, 0, 0),
+                                                          child: Text(
+                                                              (index + 1)
+                                                                  .toString(),
+                                                              style: TextStyle(
+                                                                  fontSize: 10,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w200)),
+                                                        ),
+                                                        Padding(
+                                                          padding: EdgeInsets
+                                                              .fromLTRB(
+                                                                  20, 0, 0, 0),
+                                                          child: Text(
+                                                              widget.data[index]
+                                                                  [
+                                                                  'event_name'],
+                                                              style: TextStyle(
+                                                                  fontSize: 16,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold)),
+                                                        ),
+                                                        Padding(
+                                                          padding: EdgeInsets
+                                                              .fromLTRB(
+                                                                  20, 0, 0, 0),
+                                                          child: Text(
+                                                              (widget
+                                                                          .data[index]
+                                                                              [
+                                                                              'detail']
+                                                                          .length >
+                                                                      40)
+                                                                  ? widget.data[index]['detail']
+                                                                          .substring(
+                                                                              0,
+                                                                              40) +
+                                                                      "..."
+                                                                  : widget.data[
+                                                                          index]
+                                                                      [
+                                                                      'detail'],
+                                                              style: TextStyle(
+                                                                  fontSize: 12,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .normal)),
+                                                        ),
+                                                        // _isLoading
+                                                        // ? Container(
+                                                        //   // color: Colors.green,
+                                                        //   padding: EdgeInsets.fromLTRB(10, 20, 0, 0),
+                                                        //   child: Center(child: CircularProgressIndicator(),),
+                                                        // )
+                                                        // : Container(),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  Container(
+                                                    // color: Colors.amber,
+                                                    width:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .width *
+                                                            0.4,
+                                                    height: 200,
+                                                    child: Row(
+                                                      children: <Widget>[
+                                                        Column(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .center,
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceEvenly,
+                                                          children: <Widget>[
+                                                            ClipRRect(
+                                                                borderRadius: BorderRadius.only(
+                                                                    topRight: Radius
                                                                         .circular(
+                                                                            8),
+                                                                    bottomRight:
+                                                                        Radius.circular(
                                                                             8)),
-                                                        child: Container(
-                                                          width: MediaQuery.of(
-                                                                      context)
-                                                                  .size
-                                                                  .width *
-                                                              0.4,
-                                                          height: 180,
-                                                          child: Image.memory(
-                                                            base64.decode(widget
-                                                                    .data[index]
-                                                                [
-                                                                'event_image']),
-                                                            fit: BoxFit
-                                                                .fitHeight,
-                                                          ),
-                                                        )),
-                                                  ],
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      onTap: () async {
-                                        setState(() {
-                                          _isLoading = true;
-                                        });
+                                                                child:
+                                                                    Container(
+                                                                  width: MediaQuery.of(
+                                                                              context)
+                                                                          .size
+                                                                          .width *
+                                                                      0.4,
+                                                                  height: 180,
+                                                                  child: Image
+                                                                      .memory(
+                                                                    base64.decode(
+                                                                        widget.data[index]
+                                                                            [
+                                                                            'event_image']),
+                                                                    fit: BoxFit
+                                                                        .fitHeight,
+                                                                  ),
+                                                                )),
+                                                          ],
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              onTap: () async {
+                                                setState(() {
+                                                  _isLoading = true;
+                                                });
 
-                                        var data = {
-                                          "organizer": widget.data[index]
-                                              ['organizer']
-                                        };
+                                                var data = {
+                                                  "organizer": widget
+                                                      .data[index]['organizer']
+                                                };
 
-                                        var res = await CallApi().postData(
-                                            data, 'event/get/detail/');
-                                        var body = jsonDecode(res.body);
+                                                var res = await CallApi()
+                                                    .postData(data,
+                                                        'event/get/detail/');
+                                                var body = jsonDecode(res.body);
 
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  EventRegisterPage(
-                                                      organizer_data: body,
-                                                      event_detail:
-                                                          widget.data[index])),
-                                        );
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          EventRegisterPage(
+                                                              organizer_data:
+                                                                  body,
+                                                              event_detail:
+                                                                  widget.data[
+                                                                      index])),
+                                                );
 
-                                        setState(() {
-                                          _isLoading = false;
-                                        });
-                                      }),
-                                )
-                              ],
-                            )
-                          ]))
-                ],
-              ));
-            })))
-          ]))
+                                                setState(() {
+                                                  _isLoading = false;
+                                                });
+                                              }),
+                                        )
+                                      ],
+                                    )
+                                  ]))
+                        ],
+                      ));
+                    })))
+                  ])
+                : CircularProgressIndicator())
         : Container();
   }
 
@@ -427,8 +459,11 @@ class _HomePageState extends State<HomePage> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => EventCheckPage(
+                                        state: _isAvailable,
                                         organizer_data: body,
-                                        event_detail: widget.data[index])),
+                                        event_detail:
+                                            widget.eventAttendance[_available]
+                                                [_isAvailable][index])),
                               );
 
                               setState(() {
@@ -472,25 +507,25 @@ class _HomePageState extends State<HomePage> {
               body: TabBarView(children: [
                 Container(
                   child: Column(children: <Widget>[
-                    Container(
-                      height: MediaQuery.of(context).size.height * 0.1,
-                      width: MediaQuery.of(context).size.width,
-                      child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: <Widget>[
-                            RaisedButton(
-                                child: Text(
-                                  "All",
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                                color: Colors.deepPurple,
-                                onPressed: () {
-                                  setState(() {
-                                    // _Page = 0;
-                                  });
-                                }),
-                          ]),
-                    ),
+                    // Container(
+                    //   height: MediaQuery.of(context).size.height * 0.1,
+                    //   width: MediaQuery.of(context).size.width,
+                    //   child: Row(
+                    //       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    //       children: <Widget>[
+                    //         RaisedButton(
+                    //             child: Text(
+                    //               "All",
+                    //               style: TextStyle(color: Colors.white),
+                    //             ),
+                    //             color: Colors.deepPurple,
+                    //             onPressed: () {
+                    //               setState(() {
+                    //                 // _Page = 0;
+                    //               });
+                    //             }),
+                    //       ]),
+                    // ),
                     dataAttendance()
                   ]),
                 ),
@@ -775,79 +810,88 @@ class _HomePageState extends State<HomePage> {
                 ),
                 SingleChildScrollView(
                   child: Column(
-                      children: (widget
-                                      .eventAttendance[0]['available'].length ==
-                                  0 &&
-                              widget.eventAttendance[1]['coming'].length == 0
-                              &&
-                              widget.eventAttendance[2]['unavailable'].length == 0)
-                          ? <Widget>[
-                              Padding(
-                                child: Text(
-                                    "It's seem like you aren't registered any event yet.",
-                                    style: TextStyle(color: Colors.black38)),
-                                padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
-                              ),
-                            ]
-                          : <Widget>[
-                              Padding(
-                                child: Text(
-                                  "Now running...",
-                                ),
-                                padding: EdgeInsets.fromLTRB(0, 5, 0, 0),
-                              ),
-                              widget.eventAttendance[0]['available'].length == 0
-                                  ? Container(
-                                      padding: EdgeInsets.only(top: 2),
-                                      child: Text(
-                                          "No event that running right now.",
-                                          style:
-                                              TextStyle(color: Colors.black38)),
-                                    )
-                                  : _dataAvaiable('available'),
-                              Container(
-                                height: 50,
-                              ),
-                              Divider(),
-                              Padding(
-                                child: Text(
-                                  "Coming soon...",
-                                ),
-                                padding: EdgeInsets.fromLTRB(0, 5, 0, 0),
-                              ),
-                              widget.eventAttendance[1]['coming'].length == 0
-                                  ? Container(
-                                      padding: EdgeInsets.only(top: 2),
-                                      child: Text(
-                                        "No event here, try to register some event?",
-                                        style: TextStyle(color: Colors.black38),
-                                      ),
-                                    )
-                                  : _dataAvaiable('coming'),
-                              Container(
-                                height: 50,
-                              ),
-                              Divider(),
-                              Padding(
-                                child: Text(
-                                  "Already finished",
-                                ),
-                                padding: EdgeInsets.fromLTRB(0, 5, 0, 0),
-                              ),
-                              widget.eventAttendance[2]['unavailable'].length ==
-                                      0
-                                  ? Container(
-                                      padding: EdgeInsets.only(top: 2),
-                                      child: Text(
-                                          "No event that already finished yet.",
-                                          style:
-                                              TextStyle(color: Colors.black38)),
-                                    )
-                                  : _dataAvaiable('unavailable'),
-                              Container(
-                                height: 50,
-                              ),
-                            ]),
+                      children: widget.eventAttendance != null
+                          ? (widget.eventAttendance[0]['available'].length ==
+                                      0 &&
+                                  widget.eventAttendance[1]['coming'].length ==
+                                      0 &&
+                                  widget.eventAttendance[2]['unavailable']
+                                          .length ==
+                                      0)
+                              ? <Widget>[
+                                  Padding(
+                                    child: Text(
+                                        "It's seem like you aren't registered any event yet.",
+                                        style:
+                                            TextStyle(color: Colors.black38)),
+                                    padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                                  ),
+                                ]
+                              : <Widget>[
+                                  Padding(
+                                    child: Text(
+                                      "Now running...",
+                                    ),
+                                    padding: EdgeInsets.fromLTRB(0, 5, 0, 0),
+                                  ),
+                                  widget.eventAttendance[0]['available']
+                                              .length ==
+                                          0
+                                      ? Container(
+                                          padding: EdgeInsets.only(top: 2),
+                                          child: Text(
+                                              "No event that running right now.",
+                                              style: TextStyle(
+                                                  color: Colors.black38)),
+                                        )
+                                      : _dataAvaiable('available'),
+                                  Container(
+                                    height: 50,
+                                  ),
+                                  Divider(),
+                                  Padding(
+                                    child: Text(
+                                      "Coming soon...",
+                                    ),
+                                    padding: EdgeInsets.fromLTRB(0, 5, 0, 0),
+                                  ),
+                                  widget.eventAttendance[1]['coming'].length ==
+                                          0
+                                      ? Container(
+                                          padding: EdgeInsets.only(top: 2),
+                                          child: Text(
+                                            "No event here, try to register some event?",
+                                            style: TextStyle(
+                                                color: Colors.black38),
+                                          ),
+                                        )
+                                      : _dataAvaiable('coming'),
+                                  Container(
+                                    height: 50,
+                                  ),
+                                  Divider(),
+                                  Padding(
+                                    child: Text(
+                                      "Already finished",
+                                    ),
+                                    padding: EdgeInsets.fromLTRB(0, 5, 0, 0),
+                                  ),
+                                  widget.eventAttendance[2]['unavailable']
+                                              .length ==
+                                          0
+                                      ? Container(
+                                          padding: EdgeInsets.only(top: 2),
+                                          child: Text(
+                                              "No event that already finished yet.",
+                                              style: TextStyle(
+                                                  color: Colors.black38)),
+                                        )
+                                      : _dataAvaiable('unavailable'),
+                                  Container(
+                                    height: 50,
+                                  ),
+                                ]
+                          : <Widget>[CircularProgressIndicator()]),
                 ),
               ]),
             )));

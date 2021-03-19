@@ -282,9 +282,7 @@ class _EventConfirmPageState extends State<EventConfirmPage> {
                               } else {
                                 print(body['detail'][0]);
                                 final snackbar = SnackBar(
-                                    content: Text(
-                                        'Your identity is matching less than 80% \n your matching :' +
-                                            body['detail'][0]));
+                                    content: Text(body['detail'][0]));
 
                                 setState(() {
                                   ScaffoldMessenger.of(context)

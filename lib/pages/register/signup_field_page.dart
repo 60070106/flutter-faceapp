@@ -19,6 +19,7 @@ class _RegisterPageState extends State<RegisterPage> {
   TextEditingController firstNameController = TextEditingController();
   TextEditingController lastNameController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
 
   bool _isLoading = false;
   File _image;
@@ -52,6 +53,7 @@ class _RegisterPageState extends State<RegisterPage> {
       'first_name': firstNameController.text,
       'last_name': lastNameController.text,
       'phone': phoneController.text,
+      'email': emailController.text,
       'image': [
         {'imgpath': base64Image}
       ]
@@ -60,22 +62,31 @@ class _RegisterPageState extends State<RegisterPage> {
     var res = await CallApi().postData(data, 'register/');
     var body = await json.decode(res.body);
 
-    var resHomepage = await CallApi().getData('event/get_all_event/');
-    var bodyHomepage = json.decode(resHomepage.body);
-
     if (body['success']) {
+      var resLogin = await CallApi().postData({
+        "username": userNameController.text,
+        "password": passwordController.text
+      }, 'login/');
+      var bodyLogin = await json.decode(resLogin.body);
+
       SharedPreferences localStorage = await SharedPreferences.getInstance();
-      localStorage.setString('token', body['token']);
-      localStorage.setString('user', json.encode(body['user']));
+      localStorage.setString('token', bodyLogin['token']);
+      localStorage.setString('user', json.encode(bodyLogin['user']));
 
       var userJson = localStorage.getString('user');
       var user = json.decode(userJson);
 
       var data = {"username": user['username']};
 
+      var resHomepage = await CallApi().getData('event/get_all_event/');
+      var bodyHomepage = json.decode(resHomepage.body);
+
       var resDataAttendance =
           await CallApi().postData(data, 'event/camp/attendance/');
       var bodyDataAttendance = json.decode(resDataAttendance.body);
+
+      localStorage.setString('data', json.encode(bodyHomepage));
+      localStorage.setString('attendance', json.encode(bodyDataAttendance));
 
       Navigator.push(
         context,
@@ -304,6 +315,23 @@ class _RegisterPageState extends State<RegisterPage> {
                                       color: Colors.grey,
                                     ),
                                     hintText: "กรุณาใส่เบอร์โทรศัพท์",
+                                    hintStyle: TextStyle(
+                                        color: Color(0xFF9b9b9b),
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.normal),
+                                  ),
+                                ),
+                                TextField(
+                                  style: TextStyle(color: Color(0xFF000000)),
+                                  controller: emailController,
+                                  cursorColor: Color(0xFF9b9b9b),
+                                  keyboardType: TextInputType.text,
+                                  decoration: InputDecoration(
+                                    prefixIcon: Icon(
+                                      Icons.email,
+                                      color: Colors.grey,
+                                    ),
+                                    hintText: "กรุณาใส่ email",
                                     hintStyle: TextStyle(
                                         color: Color(0xFF9b9b9b),
                                         fontSize: 15,

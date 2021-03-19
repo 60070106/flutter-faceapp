@@ -184,8 +184,8 @@ class _LogInPageState extends State<LogInPage> {
     var res = await CallApi().postData(data, 'login/');
     var body = jsonDecode(res.body);
 
-    var resHomepage = await CallApi().getData('event/get_all_event/');
-    var bodyHomepage = json.decode(resHomepage.body);
+    // var resHomepage = await CallApi().getData('event/get_all_event/');
+    // var bodyHomepage = json.decode(resHomepage.body);
 
     // print(bodyHomepage[0]);
 
@@ -197,16 +197,19 @@ class _LogInPageState extends State<LogInPage> {
       var userJson = localStorage.getString('user');
       var user = json.decode(userJson);
 
-      var data = {"username": user['username']};
+      // var data = {"username": user['username']};
 
-      var resDataAttendance = await CallApi().postData(data, 'event/camp/attendance/');
-      var bodyDataAttendance = json.decode(resDataAttendance.body);
+      // var resDataAttendance = await CallApi().postData(data, 'event/camp/attendance/');
+      // var bodyDataAttendance = json.decode(resDataAttendance.body);
+
+      // localStorage.setString('data', json.encode(bodyHomepage));
+      // localStorage.setString('attendance', json.encode(bodyDataAttendance));
 
     
       Navigator.push(
         context,
         new MaterialPageRoute(
-          builder: (context) => HomePage(data: bodyHomepage, userdata: user, eventAttendance: bodyDataAttendance,)));
+          builder: (context) => HomePage(userdata: user)));
     
     
     } else if (body['success'] = false) {

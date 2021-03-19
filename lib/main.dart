@@ -31,24 +31,24 @@ class _MyAppState extends State<MyApp> {
     // check if token is there
     SharedPreferences localStorage = await SharedPreferences.getInstance();
 
-    var resHomepage = await CallApi().getData('event/get_all_event/');
-    var bodyHomepage = json.decode(resHomepage.body);
-
     var token = localStorage.getString('token');
-
     var userJson = localStorage.getString('user');
+    var event = localStorage.getString('data');
+    var attendance = localStorage.getString('attendance');
+
     var user = json.decode(userJson);
+    // ignore: non_constant_identifier_names
+    var event_Data = json.decode(event);
+    var attendanceData = json.decode(attendance);
 
-    var data = {"username": user['username']};
-
-    var resDataAttendance =
-        await CallApi().postData(data, 'event/camp/attendance/');
-    var bodyDataAttendance = json.decode(resDataAttendance.body);
+    // print(user);
+    // print(eventData.length);
+    // print(attendanceData.length);
 
     if (token != null) {
-      eventData = bodyHomepage;
+      eventData = event_Data;
       userData = user;
-      eventAttendance = bodyDataAttendance;
+      eventAttendance = attendanceData;
 
       setState(() {
         _isLoggedIn = true;
