@@ -2,7 +2,9 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:kmitl64app/api.dart';
-import 'package:kmitl64app/pages/home/home_page.dart';
+import 'package:kmitl64app/pages/approver/approve_home.dart';
+import 'package:kmitl64app/pages/camper/home_page.dart';
+import 'package:kmitl64app/pages/organizer/home.dart';
 import 'package:kmitl64app/pages/register/signup_field_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -19,7 +21,6 @@ class _LogInPageState extends State<LogInPage> {
   TextEditingController passwordController = TextEditingController();
   ScaffoldState scaffoldState;
   _showMsg(msg) {
-
     print(msg);
 
     _scaffoldKey.currentState
@@ -197,21 +198,34 @@ class _LogInPageState extends State<LogInPage> {
       var userJson = localStorage.getString('user');
       var user = json.decode(userJson);
 
-      // var data = {"username": user['username']};
+      if (body['user']['is_camper']) {
+        var user = json.decode(userJson);
+        var data = {"username": user['username']};
 
-      // var resDataAttendance = await CallApi().postData(data, 'event/camp/attendance/');
-      // var bodyDataAttendance = json.decode(resDataAttendance.body);
+        var resDataAttendance =
+            await CallApi().postData(data, 'event/camp/attendance/');
+        var bodyDataAttendance = json.decode(resDataAttendance.body);
 
-      // localStorage.setString('data', json.encode(bodyHomepage));
-      // localStorage.setString('attendance', json.encode(bodyDataAttendance));
+        var resHomepage = await CallApi().getData('event/get_all_event/');
+        var bodyHomepage = json.decode(resHomepage.body);
 
-    
-      Navigator.push(
-        context,
-        new MaterialPageRoute(
-          builder: (context) => HomePage(userdata: user)));
-    
-    
+        Navigator.push(
+            context,
+            new MaterialPageRoute(
+                builder: (context) => HomePage(userdata: user, data: bodyHomepage, eventAttendance: bodyDataAttendance,)));
+      }if (body['user']['is_organizer']) {
+        var res_organizer = await CallApi().getData('event/get_all_event/');
+        var body_organizer = json.decode(res_organizer.body);
+
+        Navigator.push(context,
+            new MaterialPageRoute(builder: (context) => OrganizerPage(data: body_organizer)));
+      }if (body['user']['is_approver']) {
+        var res_approver = await CallApi().getData('event/get_all_event/');
+        var body_approver = json.decode(res_approver.body);
+
+        Navigator.push(context,
+            new MaterialPageRoute(builder: (context) => ApproverHomePage(data: body_approver)));
+      }
     } else if (body['success'] = false) {
       _showMsg(body['detail']);
     }

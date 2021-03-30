@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:kmitl64app/api.dart';
-import 'package:kmitl64app/pages/home/home_page.dart';
+import 'package:kmitl64app/pages/camper/home_page.dart';
 
 class CheckinIdentityPage extends StatefulWidget {
   var data;

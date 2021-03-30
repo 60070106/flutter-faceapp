@@ -3,15 +3,14 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 
 class EventPeoplePage extends StatefulWidget {
-  // ignore: non_constant_identifier_names
-  var organizer_data;
+
   // ignore: non_constant_identifier_names
   var event_detail;
   // ignore: non_constant_identifier_names
   var event_people;
 
   // ignore: non_constant_identifier_names
-  EventPeoplePage({this.organizer_data, this.event_detail, this.event_people});
+  EventPeoplePage({this.event_detail, this.event_people});
 
 
   @override

@@ -1,14 +1,12 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:kmitl64app/api.dart';
-import 'package:kmitl64app/pages/home/event_checkin.dart';
-import 'package:kmitl64app/pages/home/event_register.dart';
+import 'package:kmitl64app/pages/camper/event_checkin.dart';
+import 'package:kmitl64app/pages/camper/event_register.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'event_confirm.dart';
 
 class HomePage extends StatefulWidget {
   var data;
@@ -22,24 +20,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  File _image;
   int _Page = 0;
-  bool _isLoading = false;
   final picker = ImagePicker();
-
-  DateTime selectedDate = DateTime.now();
-
-  TextEditingController locationController = TextEditingController();
-  TextEditingController eventStartController = TextEditingController();
-  TextEditingController eventEndController = TextEditingController();
-  TextEditingController eventNameController = TextEditingController();
-  TextEditingController detailController = TextEditingController();
-
-  @override
-  void initState() {
-    _getEventAttendance();
-    super.initState();
-  }
 
   void _getEventAttendance() async {
     var data = {"username": widget.userdata['username']};
@@ -66,40 +48,13 @@ class _HomePageState extends State<HomePage> {
 
     setState(() {
       if (pickedFile != null) {
-        _image = File(pickedFile.path);
       } else {
         print('No image selected.');
       }
     });
   }
 
-  _selectStartDate(BuildContext context) async {
-    final DateTime picked = await showDatePicker(
-      context: context,
-      initialDate: selectedDate,
-      firstDate: DateTime.now(),
-      lastDate: DateTime(DateTime.now().year + 10),
-    );
-    if (picked != null && picked != selectedDate)
-      setState(() {
-        eventStartController.text = picked.toString().substring(0, 10);
-        selectedDate = picked;
-      });
-  }
 
-  _selectEndDate(BuildContext context) async {
-    final DateTime picked = await showDatePicker(
-      context: context,
-      initialDate: selectedDate,
-      firstDate: DateTime.now(),
-      lastDate: DateTime(DateTime.now().year + 10),
-    );
-    if (picked != null && picked != selectedDate)
-      setState(() {
-        eventEndController.text = picked.toString().substring(0, 10);
-        selectedDate = picked;
-      });
-  }
 
   Widget dataAttendance() {
     return (_Page == 0)
@@ -264,34 +219,18 @@ class _HomePageState extends State<HomePage> {
                                                 ],
                                               ),
                                               onTap: () async {
-                                                setState(() {
-                                                  _isLoading = true;
-                                                });
-
-                                                var data = {
-                                                  "organizer": widget
-                                                      .data[index]['organizer']
-                                                };
-
-                                                var res = await CallApi()
-                                                    .postData(data,
-                                                        'event/get/detail/');
-                                                var body = jsonDecode(res.body);
 
                                                 Navigator.push(
                                                   context,
                                                   MaterialPageRoute(
                                                       builder: (context) =>
                                                           EventRegisterPage(
-                                                              organizer_data:
-                                                                  body,
                                                               event_detail:
                                                                   widget.data[
                                                                       index])),
                                                 );
 
                                                 setState(() {
-                                                  _isLoading = false;
                                                 });
                                               }),
                                         )
@@ -302,7 +241,7 @@ class _HomePageState extends State<HomePage> {
                       ));
                     })))
                   ])
-                : CircularProgressIndicator())
+                : Center(child: CircularProgressIndicator()))
         : Container();
   }
 
@@ -443,7 +382,6 @@ class _HomePageState extends State<HomePage> {
                             ),
                             onTap: () async {
                               setState(() {
-                                _isLoading = true;
                               });
 
                               var data = {
@@ -467,7 +405,6 @@ class _HomePageState extends State<HomePage> {
                               );
 
                               setState(() {
-                                _isLoading = false;
                               });
                             }),
                       )
@@ -483,9 +420,9 @@ class _HomePageState extends State<HomePage> {
     // print(widget.eventAttendance);
     return MaterialApp(
         home: DefaultTabController(
-            length: 3,
+            length: 2,
             child: Scaffold(
-              resizeToAvoidBottomInset: true,
+              resizeToAvoidBottomInset: false,
               appBar: AppBar(
                   title: Text("Event Calendar"),
                   actions: <Widget>[
@@ -498,7 +435,7 @@ class _HomePageState extends State<HomePage> {
                   bottom:
                       TabBar(indicatorColor: Colors.amberAccent, tabs: <Tab>[
                     Tab(text: "Event Available", icon: Icon(Icons.person)),
-                    Tab(text: "Create Event", icon: Icon(Icons.add)),
+                    // Tab(text: "Create Event", icon: Icon(Icons.add)),
                     Tab(
                         text: "Event Attendance",
                         icon: Icon(Icons.play_for_work_outlined))
@@ -507,306 +444,8 @@ class _HomePageState extends State<HomePage> {
               body: TabBarView(children: [
                 Container(
                   child: Column(children: <Widget>[
-                    // Container(
-                    //   height: MediaQuery.of(context).size.height * 0.1,
-                    //   width: MediaQuery.of(context).size.width,
-                    //   child: Row(
-                    //       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    //       children: <Widget>[
-                    //         RaisedButton(
-                    //             child: Text(
-                    //               "All",
-                    //               style: TextStyle(color: Colors.white),
-                    //             ),
-                    //             color: Colors.deepPurple,
-                    //             onPressed: () {
-                    //               setState(() {
-                    //                 // _Page = 0;
-                    //               });
-                    //             }),
-                    //       ]),
-                    // ),
                     dataAttendance()
                   ]),
-                ),
-                Center(
-                  child: Container(
-                      height: 600,
-                      padding: EdgeInsets.all(10),
-                      child: SingleChildScrollView(
-                        child: Column(
-                          children: <Widget>[
-                            Center(
-                                child: Column(
-                              children: <Widget>[
-                                ClipRRect(
-                                    borderRadius: BorderRadius.only(
-                                        topLeft: Radius.circular(8),
-                                        topRight: Radius.circular(8)),
-                                    child: _image != null
-                                        ? Stack(
-                                            alignment: Alignment.center,
-                                            children: <Widget>[
-                                              ClipRRect(
-                                                borderRadius: BorderRadius.only(
-                                                    topLeft: Radius.circular(8),
-                                                    topRight:
-                                                        Radius.circular(8)),
-                                                child: Image(
-                                                  fit: BoxFit.fitWidth,
-                                                  image: FileImage(_image),
-                                                  width: MediaQuery.of(context)
-                                                      .size
-                                                      .width,
-                                                  height: MediaQuery.of(context)
-                                                          .size
-                                                          .height *
-                                                      0.3,
-                                                ),
-                                              ),
-                                              Container(
-                                                width: MediaQuery.of(context)
-                                                    .size
-                                                    .width,
-                                                height: MediaQuery.of(context)
-                                                        .size
-                                                        .height *
-                                                    0.3,
-                                                decoration: BoxDecoration(
-                                                  gradient: LinearGradient(
-                                                    begin:
-                                                        Alignment.bottomCenter,
-                                                    end: Alignment.topCenter,
-                                                    stops: [0, 0.5],
-                                                    colors: [
-                                                      const Color(0xA8000000),
-                                                      const Color(0x00FFFFFF)
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
-                                              Container(
-                                                width: MediaQuery.of(context)
-                                                    .size
-                                                    .width,
-                                                height: MediaQuery.of(context)
-                                                        .size
-                                                        .height *
-                                                    0.3,
-                                                child: Material(
-                                                  color: Colors.transparent,
-                                                  child: InkWell(
-                                                    onTap: () {
-                                                      getImage();
-                                                    },
-                                                    splashColor: Colors.black26,
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          )
-                                        : Stack(
-                                            alignment: Alignment.center,
-                                            children: <Widget>[
-                                              Container(
-                                                width: MediaQuery.of(context)
-                                                    .size
-                                                    .width,
-                                                height: MediaQuery.of(context)
-                                                        .size
-                                                        .height *
-                                                    0.3,
-                                                child: Material(
-                                                  color: Colors.grey[200],
-                                                  child: InkWell(
-                                                    onTap: () {
-                                                      getImage();
-                                                    },
-                                                    splashColor: Colors.black26,
-                                                  ),
-                                                ),
-                                              ),
-                                              Icon(Icons.camera_alt,
-                                                  color: Colors.grey[800]),
-                                              Container(
-                                                height: 75,
-                                                alignment:
-                                                    Alignment.bottomCenter,
-                                                child: Text(
-                                                    "กรุณาใส่รูปภาพประกอบกิจกรรม"),
-                                              )
-                                            ],
-                                          )),
-                                Column(
-                                  children: <Widget>[
-                                    TextField(
-                                      style:
-                                          TextStyle(color: Color(0xFF000000)),
-                                      controller: eventNameController,
-                                      cursorColor: Color(0xFF9b9b9b),
-                                      keyboardType: TextInputType.text,
-                                      decoration: InputDecoration(
-                                        prefixIcon: Icon(
-                                          Icons.event,
-                                          color: Colors.grey,
-                                        ),
-                                        hintText: "กรุณาใส่ชื่อกิจกรรม",
-                                        hintStyle: TextStyle(
-                                            color: Color(0xFF9b9b9b),
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.normal),
-                                      ),
-                                    ),
-                                    TextField(
-                                      style:
-                                          TextStyle(color: Color(0xFF000000)),
-                                      cursorColor: Color(0xFF9b9b9b),
-                                      keyboardType: TextInputType.text,
-                                      controller: eventStartController,
-                                      onTap: () {
-                                        _selectStartDate(context);
-                                      },
-                                      decoration: InputDecoration(
-                                        prefixIcon: Icon(
-                                          Icons.arrow_downward,
-                                          color: Colors.grey,
-                                        ),
-                                        hintText: "กรุณาวันที่เริ่มต้นกิจกรรม",
-                                        hintStyle: TextStyle(
-                                            color: Color(0xFF9b9b9b),
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.normal),
-                                      ),
-                                    ),
-                                    TextField(
-                                      style:
-                                          TextStyle(color: Color(0xFF000000)),
-                                      cursorColor: Color(0xFF9b9b9b),
-                                      keyboardType: TextInputType.text,
-                                      controller: eventEndController,
-                                      onTap: () {
-                                        _selectEndDate(context);
-                                      },
-                                      decoration: InputDecoration(
-                                        prefixIcon: Icon(
-                                          Icons.arrow_upward,
-                                          color: Colors.grey,
-                                        ),
-                                        hintText: "กรุณาวันที่สิ้นสุดกิจกรรม",
-                                        hintStyle: TextStyle(
-                                            color: Color(0xFF9b9b9b),
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.normal),
-                                      ),
-                                    ),
-                                    TextField(
-                                      style:
-                                          TextStyle(color: Color(0xFF000000)),
-                                      controller: locationController,
-                                      cursorColor: Color(0xFF9b9b9b),
-                                      keyboardType: TextInputType.text,
-                                      decoration: InputDecoration(
-                                        prefixIcon: Icon(
-                                          Icons.place,
-                                          color: Colors.grey,
-                                        ),
-                                        hintText: "กรุณาใส่สถานที่กิจกรรม",
-                                        hintStyle: TextStyle(
-                                            color: Color(0xFF9b9b9b),
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.normal),
-                                      ),
-                                    ),
-                                    TextField(
-                                      style:
-                                          TextStyle(color: Color(0xFF000000)),
-                                      controller: detailController,
-                                      cursorColor: Color(0xFF9b9b9b),
-                                      maxLines: null,
-                                      keyboardType: TextInputType.multiline,
-                                      decoration: InputDecoration(
-                                        prefixIcon:
-                                            Icon(Icons.text_snippet_rounded),
-                                        hintText: "กรุณาใส่รายละเอียด",
-                                        hintStyle: TextStyle(
-                                            // height: 3.5,
-                                            color: Color(0xFF9b9b9b),
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.normal),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(10.0),
-                                      child: FlatButton(
-                                          child: Padding(
-                                            padding: EdgeInsets.only(
-                                                top: 8,
-                                                bottom: 8,
-                                                left: 10,
-                                                right: 10),
-                                            child: Text(
-                                              'Create Event',
-                                              textDirection: TextDirection.ltr,
-                                              style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 15.0,
-                                                decoration: TextDecoration.none,
-                                                fontWeight: FontWeight.normal,
-                                              ),
-                                            ),
-                                          ),
-                                          color: Colors.red,
-                                          disabledColor: Colors.grey,
-                                          shape: new RoundedRectangleBorder(
-                                              borderRadius:
-                                                  new BorderRadius.circular(
-                                                      20.0)),
-                                          onPressed: () async {
-                                            SharedPreferences localStorage =
-                                                await SharedPreferences
-                                                    .getInstance();
-                                            var userJson =
-                                                localStorage.getString('user');
-                                            var user = json.decode(userJson);
-
-                                            String base64Image = base64Encode(
-                                                _image.readAsBytesSync());
-
-                                            var EventData = {
-                                              'imgevent': base64Image,
-                                              'organizer': user['username'],
-                                              'location':
-                                                  locationController.text,
-                                              'duration':
-                                                  eventStartController.text +
-                                                      " - " +
-                                                      eventEndController.text,
-                                              'event_name':
-                                                  eventNameController.text,
-                                              'detail': detailController.text,
-                                              'imgpath': '',
-                                            };
-
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      EventConfirmPage(
-                                                        data: EventData,
-                                                        userdata: user,
-                                                      )
-                                                  // builder: (context) => TestMyApp(),
-                                                  ),
-                                            );
-                                          }),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ))
-                          ],
-                        ),
-                      )),
                 ),
                 SingleChildScrollView(
                   child: Column(
@@ -891,7 +530,7 @@ class _HomePageState extends State<HomePage> {
                                     height: 50,
                                   ),
                                 ]
-                          : <Widget>[CircularProgressIndicator()]),
+                          : <Widget>[Center(child: CircularProgressIndicator())]),
                 ),
               ]),
             )));

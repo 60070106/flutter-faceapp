@@ -4,8 +4,9 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:kmitl64app/api.dart';
-import 'package:kmitl64app/pages/home/home_page.dart';
+import 'package:kmitl64app/pages/camper/home_page.dart';
 import 'package:kmitl64app/pages/login/signin_field_page.dart';
+import 'package:kmitl64app/pages/organizer/home.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -88,17 +89,26 @@ class _RegisterPageState extends State<RegisterPage> {
       localStorage.setString('data', json.encode(bodyHomepage));
       localStorage.setString('attendance', json.encode(bodyDataAttendance));
 
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => HomePage(
-                  data: bodyHomepage,
-                  userdata: user,
-                  eventAttendance: bodyDataAttendance,
-                )
-            // builder: (context) => TestMyApp(),
-            ),
-      );
+      if (body['user']['is_camper']) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => HomePage(
+                    data: bodyHomepage,
+                    userdata: user,
+                    eventAttendance: bodyDataAttendance,
+                  )
+              // builder: (context) => TestMyApp(),
+              ),
+        );
+      } else if (body['user']['is_organizer']) {
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => OrganizerPage(data: bodyHomepage)));
+      } else if (body['user']['is_approver']) {
+        Navigator.push(context,
+            new MaterialPageRoute(builder: (context) => OrganizerPage(data: bodyHomepage)));
+      }
+
     } else {
       var text = "";
 

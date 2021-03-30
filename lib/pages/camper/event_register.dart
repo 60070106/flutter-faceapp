@@ -7,13 +7,12 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'event_people.dart';
 
 class EventRegisterPage extends StatefulWidget {
-  // ignore: non_constant_identifier_names
-  var organizer_data;
+
   // ignore: non_constant_identifier_names
   var event_detail;
 
   // ignore: non_constant_identifier_names
-  EventRegisterPage({this.organizer_data, this.event_detail});
+  EventRegisterPage({this.event_detail});
 
   @override
   _EventRegisterPageState createState() => _EventRegisterPageState();
@@ -108,23 +107,23 @@ class _EventRegisterPageState extends State<EventRegisterPage> {
                     Padding(
                       padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
                       child: Text(
-                        widget.organizer_data['first_name'] +
+                        widget.event_detail['organizer']['first_name'] +
                             " " +
-                            widget.organizer_data['last_name'],
+                            widget.event_detail['organizer']['last_name'],
                         style: TextStyle(fontSize: 16),
                       ),
                     ),
                     Padding(
                       padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
                       child: Text(
-                        widget.organizer_data['phone'],
+                        widget.event_detail['organizer']['phone'],
                         style: TextStyle(fontSize: 16),
                       ),
                     ),
                     Padding(
                       padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
                       child: Text(
-                        "อีแมว",
+                        widget.event_detail['organizer']['email'],
                         style: TextStyle(fontSize: 16),
                       ),
                     ),
@@ -196,8 +195,6 @@ class _EventRegisterPageState extends State<EventRegisterPage> {
                                             MaterialPageRoute(
                                                 builder: (context) =>
                                                     EventPeoplePage(
-                                                      organizer_data:
-                                                          widget.organizer_data,
                                                       event_detail:
                                                           widget.event_detail,
                                                       event_people: campBody,
@@ -267,8 +264,6 @@ class _EventRegisterPageState extends State<EventRegisterPage> {
                                           MaterialPageRoute(
                                               builder: (context) =>
                                                   EventPeoplePage(
-                                                      organizer_data:
-                                                          widget.organizer_data,
                                                       event_detail:
                                                           widget.event_detail,
                                                       event_people: body)

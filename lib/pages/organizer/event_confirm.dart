@@ -4,9 +4,10 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:kmitl64app/api.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+// import 'package:shared_preferences/shared_preferences.dart';
 
-import 'home_page.dart';
+// import '../camper/home_page.dart';
+import 'home.dart';
 
 class EventConfirmPage extends StatefulWidget {
   var data;
@@ -255,52 +256,30 @@ class _EventConfirmPageState extends State<EventConfirmPage> {
                                   .postData(widget.data, 'event/register/');
                               var body = jsonDecode(res.body);
 
+                              print(body);
+
                               if (body['success']) {
-                                print(body);
                                 var resHomepage = await CallApi()
                                     .getData('event/get_all_event/');
                                 var bodyHomepage =
                                     json.decode(resHomepage.body);
 
-                                SharedPreferences localStorage =
-                                    await SharedPreferences.getInstance();
-                                var userJson = localStorage.getString('user');
-                                var user = json.decode(userJson);
-
-                                var data = {"username": user['username']};
-
-                                var resDataAttendance = await CallApi()
-                                    .postData(data, 'event/camp/attendance/');
-                                var bodyDataAttendance =
-                                    json.decode(resDataAttendance.body);
-
                                 Navigator.push(
                                     context,
                                     new MaterialPageRoute(
                                         builder: (context) =>
-                                            HomePage(data: bodyHomepage, userdata: user, eventAttendance: bodyDataAttendance,)));
+                                            OrganizerPage(data: bodyHomepage)));
                               } else {
-                                print(body['detail'][0]);
+                                print(body);
                                 final snackbar = SnackBar(
-                                    content: Text(body['detail'][0]));
+                                    content: Text(body['error'][0].toString()));
 
                                 setState(() {
                                   ScaffoldMessenger.of(context)
                                       .showSnackBar(snackbar);
                                   _isLoading = false;
                                 });
-                                // setState(() {
-                                //   _isLoading = false;
-                                // });
-
                               }
-
-                              // Navigator.push(
-                              //   context,
-                              //   MaterialPageRoute(builder: (context) => EventConfirmPage(data: EventData, userdata: user,)
-                              //     // builder: (context) => TestMyApp(),
-                              //   ),
-                              // );
                             }),
                 ),
               ],
