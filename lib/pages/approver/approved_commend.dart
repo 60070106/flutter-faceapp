@@ -1,7 +1,10 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:kmitl64app/api.dart';
+import 'package:kmitl64app/pages/approver/approve_home.dart';
 import 'package:pdf_render/pdf_render_widgets.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class CommendApprovedPage extends StatefulWidget {
   var data;
@@ -14,6 +17,7 @@ class CommendApprovedPage extends StatefulWidget {
 class _CommendApprovedPageState extends State<CommendApprovedPage> {
   bool documentApproved = false;
   bool documentUnapproved = false;
+  bool _isLoading = false;
 
   TextEditingController commentController = TextEditingController();
 
@@ -136,20 +140,58 @@ class _CommendApprovedPageState extends State<CommendApprovedPage> {
                   child: Padding(
                       padding: const EdgeInsets.only(top: 10.0, bottom: 20.0),
                       child: FlatButton(
-                          onPressed: () {
-                            print("ยืนยัน");
-                            // Navigator.push(
-                            //   context,
-                            //   MaterialPageRoute(
-                            //       builder: (context) =>
-                            //           CommendApprovedPage(data: widget.data)),
-                            // );
-                          },
+                          onPressed: _isLoading
+                              ? null
+                              : () async {
+                                  setState(() {
+                                    _isLoading = true;
+                                  });
+
+                                  SharedPreferences localStorage =
+                                      await SharedPreferences.getInstance();
+                                  var userJson = localStorage.getString('user');
+                                  var user = json.decode(userJson);
+
+                                  var eventCommentData = {
+                                    'agreed': documentApproved,
+                                    'detail': commentController.text != "" 
+                                      ? commentController.text 
+                                      : "ผ่าน",
+                                    'event_name': widget.data['event_name'],
+                                    'approver': user['username'],
+                                  };
+
+                                  print(eventCommentData);
+
+                                  var res = await CallApi().postData(
+                                      eventCommentData,
+                                      'event/approver/check/');
+                                  var body = jsonDecode(res.body);
+
+                                  print(body);
+
+                                  if (body['success']) {
+                                    var resHomepage = await CallApi()
+                                        .getData('event/get_all_event/');
+                                    var bodyHomepage =
+                                        json.decode(resHomepage.body);
+
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              ApproverHomePage(
+                                                  data: bodyHomepage)),
+                                    );
+                                  }
+                                },
                           child: Padding(
                             padding: EdgeInsets.only(
                                 top: 8, bottom: 8, left: 10, right: 10),
                             child: Text(
-                              'ยืนยันการตรวจสอบรายละเอียดเอกสาร',
+                              _isLoading
+                                  ? 'กำลังส่งข้อมูล...'
+                                  : 'ยืนยันการตรวจสอบรายละเอียดเอกสาร',
                               textDirection: TextDirection.ltr,
                               style: TextStyle(
                                 color: Colors.white,

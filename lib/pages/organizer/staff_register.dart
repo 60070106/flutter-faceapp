@@ -154,6 +154,12 @@ class _OrganizerEventDetailPageState extends State<OrganizerEventDetailPage> {
                           axis: TimelineAxis.vertical,
                           alignment: TimelineAlign.manual,
                           lineXY: 0.1,
+                          beforeLineStyle: LineStyle(
+                            color: Colors.lightGreen
+                          ),
+                          indicatorStyle: IndicatorStyle(
+                            color: Colors.lightGreen
+                          ),
                           endChild: Container(
                             constraints: const BoxConstraints(
                               minHeight: 100,
@@ -173,6 +179,20 @@ class _OrganizerEventDetailPageState extends State<OrganizerEventDetailPage> {
                           axis: TimelineAxis.vertical,
                           alignment: TimelineAlign.manual,
                           lineXY: 0.1,
+                          beforeLineStyle: LineStyle(
+                            color: widget.data['is_approved']
+                              ? Colors.lightGreen
+                              : widget.data['approved_by'] == 'none'
+                                ? Colors.grey
+                                : Colors.red
+                          ),
+                          indicatorStyle: IndicatorStyle(
+                            color: widget.data['is_approved']
+                              ? Colors.lightGreen
+                              : widget.data['approved_by'] == 'none'
+                                ? Colors.grey
+                                : Colors.red
+                          ),
                           endChild: Container(
                             constraints: const BoxConstraints(
                               minHeight: 100,
@@ -181,64 +201,12 @@ class _OrganizerEventDetailPageState extends State<OrganizerEventDetailPage> {
                             alignment: Alignment.centerLeft,
                             child: Padding(
                               padding: const EdgeInsets.only(left: 5),
-                              child: Text("รอการอนุมัติจากที่ปรึกษากิจกรรม"),
-                            ),
-                          ),
-                          startChild: Container(
-                            // color: Colors.amberAccent,
-                          ),
-                        ),
-                        TimelineTile(
-                          axis: TimelineAxis.vertical,
-                          alignment: TimelineAlign.manual,
-                          lineXY: 0.1,
-                          endChild: Container(
-                            constraints: const BoxConstraints(
-                              minHeight: 100,
-                            ),
-                            // color: Colors.lightGreenAccent,
-                            alignment: Alignment.centerLeft,
-                            child: Padding(
-                              padding: const EdgeInsets.only(left: 5),
-                              child: Text("รอการอนุมัติจากที่ปรึกษาสโมสรนักศึกษา"),
-                            ),
-                          ),
-                          startChild: Container(
-                            // color: Colors.amberAccent,
-                          ),
-                        ),
-                        TimelineTile(
-                          axis: TimelineAxis.vertical,
-                          alignment: TimelineAlign.manual,
-                          lineXY: 0.1,
-                          endChild: Container(
-                            constraints: const BoxConstraints(
-                              minHeight: 100,
-                            ),
-                            // color: Colors.lightGreenAccent,
-                            alignment: Alignment.centerLeft,
-                            child: Padding(
-                              padding: const EdgeInsets.only(left: 5),
-                              child: Text("รอการอนุมัติจากนายกสโมสรนักศึกษา"),
-                            ),
-                          ),
-                          startChild: Container(
-                            // color: Colors.amberAccent,
-                          ),
-                        ),
-                        TimelineTile(
-                          axis: TimelineAxis.vertical,
-                          alignment: TimelineAlign.manual,
-                          lineXY: 0.1,
-                          endChild: Container(
-                            constraints: const BoxConstraints(
-                              minHeight: 100,
-                            ),
-                            // color: Colors.lightGreenAccent,
-                            alignment: Alignment.centerLeft,
-                            child: Padding(
-                              padding: const EdgeInsets.only(left: 5),
-                              child: Text("ได้รับการอนุมัติแล้ว"),
+                              child: 
+                              widget.data['is_approved']
+                              ? Text("ได้รับการอนุมัติแล้ว")
+                              : widget.data['approved_by'] == 'none'
+                                ? Text("ได้รับการอนุมัติแล้ว")
+                                : Text("เอกสารไม่ถูกต้อง"),
                             ),
                           ),
                           startChild: Container(

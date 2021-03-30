@@ -15,6 +15,8 @@ class CheckDocumentDetailPage extends StatefulWidget {
 }
 
 class _CheckDocumentDetailPageState extends State<CheckDocumentDetailPage> {
+  bool _isButtonDisabled = true;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -171,7 +173,8 @@ class _CheckDocumentDetailPageState extends State<CheckDocumentDetailPage> {
                               ));
                             }),
                           ),
-                    Center(
+                    widget.data['approved_by'] == 'none' 
+                    ? Center(
                       child: Padding(
                           padding:
                               const EdgeInsets.only(top: 10.0, bottom: 10.0),
@@ -200,6 +203,32 @@ class _CheckDocumentDetailPageState extends State<CheckDocumentDetailPage> {
                               ),
                               color: Colors.blueGrey,
                               disabledColor: Colors.grey,
+                              shape: new RoundedRectangleBorder(
+                                  borderRadius:
+                                      new BorderRadius.circular(20.0)))),
+                    )
+                    : Center(
+                      child: Padding(
+                          padding:
+                              const EdgeInsets.only(top: 10.0, bottom: 10.0),
+                          child: FlatButton(
+                              onPressed:  _isButtonDisabled ? null : null,
+                              child: Padding(
+                                padding: EdgeInsets.only(
+                                    top: 8, bottom: 8, left: 10, right: 10),
+                                child: Text(
+                                  'ได้รับการอนุมัติแล้ว',
+                                  textDirection: TextDirection.ltr,
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 15.0,
+                                    decoration: TextDecoration.none,
+                                    fontWeight: FontWeight.normal,
+                                  ),
+                                ),
+                              ),
+                              color: Colors.blueGrey,
+                              disabledColor: Colors.lightGreen,
                               shape: new RoundedRectangleBorder(
                                   borderRadius:
                                       new BorderRadius.circular(20.0)))),

@@ -89,7 +89,7 @@ class _RegisterPageState extends State<RegisterPage> {
       localStorage.setString('data', json.encode(bodyHomepage));
       localStorage.setString('attendance', json.encode(bodyDataAttendance));
 
-      if (body['user']['is_camper']) {
+      if (bodyLogin['user']['is_camper']) {
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -101,10 +101,10 @@ class _RegisterPageState extends State<RegisterPage> {
               // builder: (context) => TestMyApp(),
               ),
         );
-      } else if (body['user']['is_organizer']) {
+      } else if (bodyLogin['user']['is_organizer']) {
         Navigator.push(context,
             MaterialPageRoute(builder: (context) => OrganizerPage(data: bodyHomepage)));
-      } else if (body['user']['is_approver']) {
+      } else if (bodyLogin['user']['is_approver']) {
         Navigator.push(context,
             new MaterialPageRoute(builder: (context) => OrganizerPage(data: bodyHomepage)));
       }
