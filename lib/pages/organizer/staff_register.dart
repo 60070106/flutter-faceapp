@@ -193,6 +193,7 @@ class _OrganizerEventDetailPageState extends State<OrganizerEventDetailPage> {
                                 ? Colors.grey
                                 : Colors.red
                           ),
+                          isLast: true,
                           endChild: Container(
                             constraints: const BoxConstraints(
                               minHeight: 100,
