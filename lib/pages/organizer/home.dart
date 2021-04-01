@@ -111,7 +111,7 @@ class _OrganizerPageState extends State<OrganizerPage> {
 
   Widget dataAttendance() {
     for (var i = 0; i < widget.data.length; i++) {
-      if (widget.data[i]['appoved_by'] != 'none') {
+      if (widget.data[i]['is_approved'] == true) {
         _availiable.add(widget.data[i]);
       } else {
         _unavailiable.add(widget.data[i]);

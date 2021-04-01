@@ -132,6 +132,13 @@ class _OrganizerEventDetailPageState extends State<OrganizerEventDetailPage> {
                           beforeLineStyle: LineStyle(
                             color: Colors.lightGreen
                           ),
+                          afterLineStyle: LineStyle(
+                            color: widget.data['is_approved']
+                              ? Colors.lightGreen
+                              : widget.data['approved_by'] == 'none'
+                                ? Colors.yellow
+                                : Colors.red
+                          ),
                           indicatorStyle: IndicatorStyle(
                             color: Colors.lightGreen
                           ),
@@ -155,25 +162,104 @@ class _OrganizerEventDetailPageState extends State<OrganizerEventDetailPage> {
                           alignment: TimelineAlign.manual,
                           lineXY: 0.1,
                           beforeLineStyle: LineStyle(
-                            color: Colors.lightGreen
+                            color: widget.data['is_approved']
+                              ? Colors.lightGreen
+                              : widget.data['approved_by'] == 'none'
+                                ? Colors.yellow
+                                : Colors.red
+                          ),
+                          afterLineStyle: LineStyle(
+                            color: widget.data['is_approved']
+                              ? Colors.lightGreen
+                              : Colors.grey
                           ),
                           indicatorStyle: IndicatorStyle(
-                            color: Colors.lightGreen
+                            color: widget.data['is_approved']
+                              ? Colors.lightGreen
+                              : widget.data['approved_by'] == 'none'
+                                ? Colors.yellow
+                                : Colors.red
                           ),
-                          endChild: Container(
-                            constraints: const BoxConstraints(
-                              minHeight: 100,
-                            ),
-                            // color: Colors.lightGreenAccent,
-                            alignment: Alignment.centerLeft,
-                            child: Padding(
-                              padding: const EdgeInsets.only(left: 5),
-                              child: Text("ตรวจสอบเอกสาร"),
-                            ),
+                          endChild: Column(
+                            children: [
+                              widget.data['is_approved'] 
+                              ? Container(
+                                height: 40,
+                              )
+                              : Container(),
+                              Container(
+                                // constraints: const BoxConstraints(
+                                //   minHeight: 100,
+                                // ),
+                                // color: Colors.lightGreenAccent,
+                                alignment: Alignment.centerLeft,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(left: 5),
+                                  child: Column(
+                                    children: [
+                                      widget.data['is_approved']
+                                  ? Text("เอกสารและรายละเอียดถูกต้อง")
+                                  : widget.data['approved_by'] == 'none'
+                                    ? Text("ตรวจสอบรายละเอียด\nและเอกสารที่เกี่ยวข้อง")
+                                    : Card(
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Text("รายละเอียดไม่ถูกต้อง",
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold
+                                            ),
+                                            ),
+                                            Text("ข้อคิดเห็น: " + widget.data['approved_detail']),
+                                            Padding(
+                                        padding: const EdgeInsets.all(10.0),
+                                        child: FlatButton(
+                                            child: Center(
+                                              child: Padding(
+                                                padding: EdgeInsets.only(
+                                                    top: 8,
+                                                    bottom: 8,
+                                                    left: 10,
+                                                    right: 10),
+                                                child: Text(
+                                                  'แก้ไข',
+                                                  textDirection: TextDirection.ltr,
+                                                  style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 15.0,
+                                                    decoration: TextDecoration.none,
+                                                    fontWeight: FontWeight.normal,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            color: Colors.orangeAccent,
+                                            disabledColor: Colors.grey,
+                                            shape: new RoundedRectangleBorder(
+                                                borderRadius:
+                                                    new BorderRadius.circular(
+                                                        20.0)),
+                                            onPressed: () async {
+                                             
+                                            }),
+                                      ),
+
+                                          ],
+                                        ),
+                                      ),
+                                    )
+
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
-                          startChild: Container(
-                            // color: Colors.amberAccent,
-                          ),
+                          // startChild: Container(
+                          //   // color: Colors.amberAccent,
+                          // ),
                         ),
                         TimelineTile(
                           axis: TimelineAxis.vertical,
@@ -182,16 +268,12 @@ class _OrganizerEventDetailPageState extends State<OrganizerEventDetailPage> {
                           beforeLineStyle: LineStyle(
                             color: widget.data['is_approved']
                               ? Colors.lightGreen
-                              : widget.data['approved_by'] == 'none'
-                                ? Colors.grey
-                                : Colors.red
+                              : Colors.grey
                           ),
                           indicatorStyle: IndicatorStyle(
                             color: widget.data['is_approved']
                               ? Colors.lightGreen
-                              : widget.data['approved_by'] == 'none'
-                                ? Colors.grey
-                                : Colors.red
+                              : Colors.grey
                           ),
                           isLast: true,
                           endChild: Container(
@@ -202,12 +284,7 @@ class _OrganizerEventDetailPageState extends State<OrganizerEventDetailPage> {
                             alignment: Alignment.centerLeft,
                             child: Padding(
                               padding: const EdgeInsets.only(left: 5),
-                              child: 
-                              widget.data['is_approved']
-                              ? Text("ได้รับการอนุมัติแล้ว")
-                              : widget.data['approved_by'] == 'none'
-                                ? Text("ได้รับการอนุมัติแล้ว")
-                                : Text("เอกสารไม่ถูกต้อง"),
+                              child: Text("ได้รับการอนุมัติแล้ว")
                             ),
                           ),
                           startChild: Container(
