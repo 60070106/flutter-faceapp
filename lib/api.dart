@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 
 class CallApi{
   // final String _url = 'http://10.110.197.3:8000/api/';
-  final String _url = 'http://2f3067c36ba5.ngrok.io/api/';
+  final String _url = 'http://1c58b2862d43.ngrok.io/api/';
   // final String _url = 'https://postgrekmitl64.herokuapp.com/api/';
 
   postData(data, apiUrl) async {
