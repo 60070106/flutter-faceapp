@@ -1,7 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:kmitl64app/api.dart';
 import 'package:kmitl64app/pages/camper/home_page.dart';
@@ -17,6 +19,7 @@ class RegisterPage extends StatefulWidget {
 class _RegisterPageState extends State<RegisterPage> {
   TextEditingController userNameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  TextEditingController repasswordController = TextEditingController();
   TextEditingController firstNameController = TextEditingController();
   TextEditingController lastNameController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
@@ -25,6 +28,7 @@ class _RegisterPageState extends State<RegisterPage> {
   bool _isLoading = false;
   File _image;
   final picker = ImagePicker();
+  final _formKey = GlobalKey<FormState>();
 
   Future getImage() async {
     final pickedFile = await picker.getImage(source: ImageSource.camera);
@@ -51,6 +55,7 @@ class _RegisterPageState extends State<RegisterPage> {
     var data = {
       'username': userNameController.text,
       'password': passwordController.text,
+      'repassword': repasswordController.text,
       'first_name': firstNameController.text,
       'last_name': lastNameController.text,
       'phone': phoneController.text,
@@ -102,13 +107,16 @@ class _RegisterPageState extends State<RegisterPage> {
               ),
         );
       } else if (bodyLogin['user']['is_organizer']) {
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => OrganizerPage(data: bodyHomepage)));
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => OrganizerPage(data: bodyHomepage)));
       } else if (bodyLogin['user']['is_approver']) {
-        Navigator.push(context,
-            new MaterialPageRoute(builder: (context) => OrganizerPage(data: bodyHomepage)));
+        Navigator.push(
+            context,
+            new MaterialPageRoute(
+                builder: (context) => OrganizerPage(data: bodyHomepage)));
       }
-
     } else {
       var text = "";
 
@@ -228,7 +236,8 @@ class _RegisterPageState extends State<RegisterPage> {
                             ],
                           )),
                 Padding(padding: EdgeInsets.only(bottom: 25)),
-                Positioned(
+                Form(
+                  key: _formKey,
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Column(
@@ -245,7 +254,63 @@ class _RegisterPageState extends State<RegisterPage> {
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
-                                TextField(
+                                TextFormField(
+                                  style: TextStyle(color: Color(0xFF000000)),
+                                  controller: firstNameController,
+                                  cursorColor: Color(0xFF9b9b9b),
+                                  keyboardType: TextInputType.text,
+                                  decoration: InputDecoration(
+                                    prefixIcon: Icon(
+                                      Icons.text_snippet_rounded,
+                                      color: Colors.grey,
+                                    ),
+                                    labelText: "ชื่อ",
+                                    labelStyle: TextStyle(
+                                        color: Color(0xFF9b9b9b),
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.normal),
+                                  ),
+                                  textInputAction: TextInputAction.next,
+                                  inputFormatters: <TextInputFormatter>[
+                                    FilteringTextInputFormatter.allow(
+                                        RegExp(r'[a-zA-Z]'))
+                                  ],
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'กรุณากรอกชื่อ';
+                                    }
+                                    return null;
+                                  },
+                                ),
+                                TextFormField(
+                                  style: TextStyle(color: Color(0xFF000000)),
+                                  controller: lastNameController,
+                                  cursorColor: Color(0xFF9b9b9b),
+                                  keyboardType: TextInputType.text,
+                                  decoration: InputDecoration(
+                                    prefixIcon: Icon(
+                                      Icons.text_snippet_rounded,
+                                      color: Colors.grey,
+                                    ),
+                                    labelText: "นามสกุล",
+                                    labelStyle: TextStyle(
+                                        color: Color(0xFF9b9b9b),
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.normal),
+                                  ),
+                                  textInputAction: TextInputAction.next,
+                                  inputFormatters: <TextInputFormatter>[
+                                    FilteringTextInputFormatter.allow(
+                                        RegExp(r'[a-zA-Z]'))
+                                  ],
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'กรุณากรอกนามสกุล';
+                                    }
+                                    return null;
+                                  },
+                                ),
+                                TextFormField(
                                   style: TextStyle(color: Color(0xFF000000)),
                                   controller: userNameController,
                                   cursorColor: Color(0xFF9b9b9b),
@@ -255,14 +320,75 @@ class _RegisterPageState extends State<RegisterPage> {
                                       Icons.account_circle,
                                       color: Colors.grey,
                                     ),
-                                    hintText: "กรุณาใส่ username",
-                                    hintStyle: TextStyle(
+                                    labelText: "ชื่อผู้ใช้",
+                                    labelStyle: TextStyle(
                                         color: Color(0xFF9b9b9b),
                                         fontSize: 15,
                                         fontWeight: FontWeight.normal),
                                   ),
+                                  textInputAction: TextInputAction.next,
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'กรุณากรอกชื่อผู้ใช้';
+                                    }
+                                    return null;
+                                  },
                                 ),
-                                TextField(
+                                TextFormField(
+                                  style: TextStyle(color: Color(0xFF000000)),
+                                  controller: phoneController,
+                                  cursorColor: Color(0xFF9b9b9b),
+                                  keyboardType: TextInputType.number,
+                                  decoration: InputDecoration(
+                                    prefixIcon: Icon(
+                                      Icons.contact_phone_rounded,
+                                      color: Colors.grey,
+                                    ),
+                                    labelText: "เบอร์โทรศัพท์",
+                                    labelStyle: TextStyle(
+                                        color: Color(0xFF9b9b9b),
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.normal),
+                                  ),
+                                  textInputAction: TextInputAction.next,
+                                  inputFormatters: <TextInputFormatter>[
+                                    FilteringTextInputFormatter.digitsOnly
+                                  ],
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'กรุณากรอกเบอร์โทรศัพท์';
+                                    }
+                                    return null;
+                                  },
+                                ),
+                                TextFormField(
+                                  style: TextStyle(color: Color(0xFF000000)),
+                                  controller: emailController,
+                                  cursorColor: Color(0xFF9b9b9b),
+                                  keyboardType: TextInputType.emailAddress,
+                                  decoration: InputDecoration(
+                                    prefixIcon: Icon(
+                                      Icons.email,
+                                      color: Colors.grey,
+                                    ),
+                                    labelText: "Email",
+                                    labelStyle: TextStyle(
+                                        color: Color(0xFF9b9b9b),
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.normal),
+                                  ),
+                                  textInputAction: TextInputAction.done,
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'กรุณากรอก Email';
+                                    }
+                                    if (!EmailValidator.validate(value)) {
+                                      return 'Email ไม่ถูกต้อง';
+                                    }
+                                    return null;
+                                  },
+                                ),
+                                TextFormField(
                                   style: TextStyle(color: Color(0xFF000000)),
                                   controller: passwordController,
                                   cursorColor: Color(0xFF9b9b9b),
@@ -273,80 +399,53 @@ class _RegisterPageState extends State<RegisterPage> {
                                       Icons.vpn_key,
                                       color: Colors.grey,
                                     ),
-                                    hintText: "กรุณาใส่รหัสผ่าน",
-                                    hintStyle: TextStyle(
+                                    labelText: "รหัสผ่าน",
+                                    labelStyle: TextStyle(
                                         color: Color(0xFF9b9b9b),
                                         fontSize: 15,
                                         fontWeight: FontWeight.normal),
                                   ),
+                                  textInputAction: TextInputAction.next,
+                                  validator: (value) {
+                                    Pattern pattern =
+                                        r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$';
+                                    RegExp regex = new RegExp(pattern);
+                                    if (value == null || value.isEmpty) {
+                                      return 'กรุณากรอกรหัสผ่าน';
+                                    }
+                                    if (!regex.hasMatch(value)) {
+                                      return 'รหัสผ่านไม่ถูกต้อง';
+                                    }
+                                    return null;
+                                  },
                                 ),
-                                TextField(
+                                TextFormField(
                                   style: TextStyle(color: Color(0xFF000000)),
-                                  controller: firstNameController,
+                                  controller: repasswordController,
                                   cursorColor: Color(0xFF9b9b9b),
                                   keyboardType: TextInputType.text,
+                                  obscureText: true,
                                   decoration: InputDecoration(
                                     prefixIcon: Icon(
-                                      Icons.text_snippet_rounded,
+                                      Icons.vpn_key,
                                       color: Colors.grey,
                                     ),
-                                    hintText: "กรุณาใส่ชื่อจริง",
-                                    hintStyle: TextStyle(
+                                    labelText: "ยืนยันรหัสผ่าน",
+                                    labelStyle: TextStyle(
                                         color: Color(0xFF9b9b9b),
                                         fontSize: 15,
                                         fontWeight: FontWeight.normal),
                                   ),
-                                ),
-                                TextField(
-                                  style: TextStyle(color: Color(0xFF000000)),
-                                  controller: lastNameController,
-                                  cursorColor: Color(0xFF9b9b9b),
-                                  keyboardType: TextInputType.text,
-                                  decoration: InputDecoration(
-                                    prefixIcon: Icon(
-                                      Icons.text_snippet_rounded,
-                                      color: Colors.grey,
-                                    ),
-                                    hintText: "กรุณาใส่นามสกุล",
-                                    hintStyle: TextStyle(
-                                        color: Color(0xFF9b9b9b),
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.normal),
-                                  ),
-                                ),
-                                TextField(
-                                  style: TextStyle(color: Color(0xFF000000)),
-                                  controller: phoneController,
-                                  cursorColor: Color(0xFF9b9b9b),
-                                  keyboardType: TextInputType.text,
-                                  decoration: InputDecoration(
-                                    prefixIcon: Icon(
-                                      Icons.contact_phone_rounded,
-                                      color: Colors.grey,
-                                    ),
-                                    hintText: "กรุณาใส่เบอร์โทรศัพท์",
-                                    hintStyle: TextStyle(
-                                        color: Color(0xFF9b9b9b),
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.normal),
-                                  ),
-                                ),
-                                TextField(
-                                  style: TextStyle(color: Color(0xFF000000)),
-                                  controller: emailController,
-                                  cursorColor: Color(0xFF9b9b9b),
-                                  keyboardType: TextInputType.text,
-                                  decoration: InputDecoration(
-                                    prefixIcon: Icon(
-                                      Icons.email,
-                                      color: Colors.grey,
-                                    ),
-                                    hintText: "กรุณาใส่ email",
-                                    hintStyle: TextStyle(
-                                        color: Color(0xFF9b9b9b),
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.normal),
-                                  ),
+                                  textInputAction: TextInputAction.next,
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'กรุณากรอกยืนยันรหัสผ่าน';
+                                    }
+                                    if (value != passwordController.text) {
+                                      return 'รหัสผ่านไม่ถูกต้อง';
+                                    }
+                                    return null;
+                                  },
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.all(10.0),
@@ -378,6 +477,8 @@ class _RegisterPageState extends State<RegisterPage> {
                                       onPressed: _isLoading
                                           ? null
                                           : () async {
+                                              if (_formKey.currentState
+                                                  .validate()) {}
                                               _takePicture(_image);
                                             }),
                                 ),

@@ -33,7 +33,7 @@ dependencies:
   timeline_tile:
   file_picker: ^1.4.2
   pdf_render:
-  
+  email_validator: ^1.0.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
