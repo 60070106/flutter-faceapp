@@ -15,6 +15,7 @@ class LogInPage extends StatefulWidget {
 
 class _LogInPageState extends State<LogInPage> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
+  final _formKey = GlobalKey<FormState>();
   bool _isLoading = false;
 
   TextEditingController usernameController = TextEditingController();
@@ -68,74 +69,98 @@ class _LogInPageState extends State<LogInPage> {
                           borderRadius: BorderRadius.circular(15)),
                       child: Padding(
                         padding: const EdgeInsets.all(10.0),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            /////////////  Email//////////////
-                            TextField(
-                              style: TextStyle(color: Color(0xFF000000)),
-                              controller: usernameController,
-                              cursorColor: Color(0xFF9b9b9b),
-                              keyboardType: TextInputType.text,
-                              decoration: InputDecoration(
-                                prefixIcon: Icon(
-                                  Icons.account_circle,
-                                  color: Colors.grey,
-                                ),
-                                hintText: "username",
-                                hintStyle: TextStyle(
-                                    color: Color(0xFF9b9b9b),
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.normal),
-                              ),
-                            ),
-
-                            /////////////// password////////////////////
-                            TextField(
-                              style: TextStyle(color: Color(0xFF000000)),
-                              cursorColor: Color(0xFF9b9b9b),
-                              controller: passwordController,
-                              keyboardType: TextInputType.text,
-                              obscureText: true,
-                              decoration: InputDecoration(
-                                prefixIcon: Icon(
-                                  Icons.vpn_key,
-                                  color: Colors.grey,
-                                ),
-                                hintText: "Password",
-                                hintStyle: TextStyle(
-                                    color: Color(0xFF9b9b9b),
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.normal),
-                              ),
-                            ),
-                            /////////////  LogIn Botton///////////////////
-                            Padding(
-                              padding: const EdgeInsets.all(10.0),
-                              child: FlatButton(
-                                child: Padding(
-                                  padding: EdgeInsets.only(
-                                      top: 8, bottom: 8, left: 10, right: 10),
-                                  child: Text(
-                                    _isLoading ? 'Loging...' : 'Login',
-                                    textDirection: TextDirection.ltr,
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 15.0,
-                                      decoration: TextDecoration.none,
-                                      fontWeight: FontWeight.normal,
-                                    ),
+                        child: Form(
+                          key: _formKey,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              /////////////  Email//////////////
+                              TextFormField(
+                                style: TextStyle(color: Color(0xFF000000)),
+                                controller: usernameController,
+                                cursorColor: Color(0xFF9b9b9b),
+                                keyboardType: TextInputType.text,
+                                decoration: InputDecoration(
+                                  prefixIcon: Icon(
+                                    Icons.account_circle,
+                                    color: Colors.grey,
                                   ),
+                                  labelText: "ชื่อผุ้ใช้",
+                                  labelStyle: TextStyle(
+                                      color: Color(0xFF9b9b9b),
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.normal),
                                 ),
-                                color: Color(0xFFFF835F),
-                                disabledColor: Colors.grey,
-                                shape: new RoundedRectangleBorder(
-                                    borderRadius:
-                                        new BorderRadius.circular(20.0)),
-                                onPressed: _isLoading ? null : _login,
+                                textInputAction: TextInputAction.next,
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'กรุณากรอกชื่อผู้ใช้';
+                                  }
+                                  return null;
+                                },
                               ),
-                            ),
-                          ],
+
+                              /////////////// password////////////////////
+                              TextFormField(
+                                style: TextStyle(color: Color(0xFF000000)),
+                                cursorColor: Color(0xFF9b9b9b),
+                                controller: passwordController,
+                                keyboardType: TextInputType.text,
+                                obscureText: true,
+                                decoration: InputDecoration(
+                                  prefixIcon: Icon(
+                                    Icons.vpn_key,
+                                    color: Colors.grey,
+                                  ),
+                                  labelText: "รหัสผ่าน",
+                                  labelStyle: TextStyle(
+                                      color: Color(0xFF9b9b9b),
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.normal),
+                                ),
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'กรุณากรอกรหัสผ่าน';
+                                  }
+                                  return null;
+                                },
+                              ),
+                              /////////////  LogIn Botton///////////////////
+                              Padding(
+                                padding: const EdgeInsets.all(10.0),
+                                child: FlatButton(
+                                    child: Padding(
+                                      padding: EdgeInsets.only(
+                                          top: 8,
+                                          bottom: 8,
+                                          left: 10,
+                                          right: 10),
+                                      child: Text(
+                                        _isLoading ? 'Loging...' : 'Login',
+                                        textDirection: TextDirection.ltr,
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 15.0,
+                                          decoration: TextDecoration.none,
+                                          fontWeight: FontWeight.normal,
+                                        ),
+                                      ),
+                                    ),
+                                    color: Color(0xFFFF835F),
+                                    disabledColor: Colors.grey,
+                                    shape: new RoundedRectangleBorder(
+                                        borderRadius:
+                                            new BorderRadius.circular(20.0)),
+                                    onPressed: _isLoading
+                                        ? null
+                                        : () async {
+                                            if (_formKey.currentState
+                                                .validate()) {}
+                                            _login;
+                                          }),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
@@ -211,21 +236,32 @@ class _LogInPageState extends State<LogInPage> {
         Navigator.push(
             context,
             new MaterialPageRoute(
-                builder: (context) => HomePage(userdata: user, data: bodyHomepage, eventAttendance: bodyDataAttendance,)));
-      }if (body['user']['is_organizer']) {
+                builder: (context) => HomePage(
+                      userdata: user,
+                      data: bodyHomepage,
+                      eventAttendance: bodyDataAttendance,
+                    )));
+      }
+      if (body['user']['is_organizer']) {
         var res_organizer = await CallApi().getData('event/get_all_event/');
         var body_organizer = json.decode(res_organizer.body);
 
-        Navigator.push(context,
-            new MaterialPageRoute(builder: (context) => OrganizerPage(data: body_organizer)));
-      }if (body['user']['is_approver']) {
+        Navigator.push(
+            context,
+            new MaterialPageRoute(
+                builder: (context) => OrganizerPage(data: body_organizer)));
+      }
+      if (body['user']['is_approver']) {
         var res_approver = await CallApi().getData('event/get_all_event/');
         var body_approver = json.decode(res_approver.body);
 
         var userApprover = json.decode(userJson);
 
-        Navigator.push(context,
-            new MaterialPageRoute(builder: (context) => DocumentCheckPage(data: body_approver, user: userApprover)));
+        Navigator.push(
+            context,
+            new MaterialPageRoute(
+                builder: (context) => DocumentCheckPage(
+                    data: body_approver, user: userApprover)));
       }
     } else if (body['success'] = false) {
       _showMsg(body['detail']);
