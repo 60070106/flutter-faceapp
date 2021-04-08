@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:kmitl64app/api.dart';
+import 'package:kmitl64app/pages/login/signin_field_page.dart';
 import 'package:kmitl64app/pages/organizer/staff_register.dart';
 import 'package:pdf_render/pdf_render.dart';
 import 'package:pdf_render/pdf_render_widgets.dart';
@@ -43,6 +45,15 @@ class _OrganizerPageState extends State<OrganizerPage> {
   bool _loadingPath = false;
   bool _hasValidMime = false;
   FileType _pickingType;
+
+  void _getEventAttendance() async {
+    var resHomepage = await CallApi().getData('event/get_all_event/');
+    var bodyHomepage = json.decode(resHomepage.body);
+
+    setState(() {
+      widget.data = bodyHomepage;
+    });
+  }
 
   void _openFileExplorer() async {
     if (_pickingType != FileType.CUSTOM || _hasValidMime) {
@@ -710,6 +721,26 @@ class _OrganizerPageState extends State<OrganizerPage> {
               resizeToAvoidBottomInset: false,
               appBar: AppBar(
                   title: Text("Organizer Event"),
+                  actions: <Widget>[
+                    IconButton(
+                        icon: const Icon(Icons.refresh),
+                        onPressed: () async {
+                          _getEventAttendance();
+                        }),
+                    IconButton(
+                        icon: const Icon(Icons.exit_to_app),
+                        onPressed: () async {
+                          SharedPreferences localStorage =
+                              await SharedPreferences.getInstance();
+                          localStorage.clear();
+                          
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => LogInPage()),
+                          );
+                        })
+                  ],
                   bottom:
                       TabBar(indicatorColor: Colors.amberAccent, tabs: <Tab>[
                     Tab(text: "All Event", icon: Icon(Icons.event)),
@@ -1116,7 +1147,7 @@ class _OrganizerPageState extends State<OrganizerPage> {
                                             File file = File(v);
                                             String base64Pdf = base64Encode(
                                                 file.readAsBytesSync());
-                                            var dataPDf = {"data" : base64Pdf};
+                                            var dataPDf = {"data": base64Pdf};
                                             documentList.add(dataPDf);
                                           });
 

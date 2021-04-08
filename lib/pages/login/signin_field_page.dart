@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:kmitl64app/api.dart';
-import 'package:kmitl64app/pages/approver/approve_home.dart';
+import 'package:kmitl64app/pages/approver/documentcheck_page.dart';
 import 'package:kmitl64app/pages/camper/home_page.dart';
 import 'package:kmitl64app/pages/organizer/home.dart';
 import 'package:kmitl64app/pages/register/signup_field_page.dart';
@@ -196,7 +196,6 @@ class _LogInPageState extends State<LogInPage> {
       localStorage.setString('user', json.encode(body['user']));
 
       var userJson = localStorage.getString('user');
-      var user = json.decode(userJson);
 
       if (body['user']['is_camper']) {
         var user = json.decode(userJson);
@@ -224,7 +223,7 @@ class _LogInPageState extends State<LogInPage> {
         var body_approver = json.decode(res_approver.body);
 
         Navigator.push(context,
-            new MaterialPageRoute(builder: (context) => ApproverHomePage(data: body_approver)));
+            new MaterialPageRoute(builder: (context) => DocumentCheckPage(data: body_approver)));
       }
     } else if (body['success'] = false) {
       _showMsg(body['detail']);

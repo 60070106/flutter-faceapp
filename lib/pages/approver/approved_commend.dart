@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:kmitl64app/api.dart';
-import 'package:kmitl64app/pages/approver/approve_home.dart';
+import 'package:kmitl64app/pages/approver/documentcheck_page.dart';
 import 'package:pdf_render/pdf_render_widgets.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -180,7 +180,7 @@ class _CommendApprovedPageState extends State<CommendApprovedPage> {
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>
-                                              ApproverHomePage(
+                                              DocumentCheckPage(
                                                   data: bodyHomepage)),
                                     );
                                   }

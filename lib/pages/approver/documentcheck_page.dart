@@ -1,7 +1,10 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:kmitl64app/api.dart';
 import 'package:kmitl64app/pages/approver/checkdetail_page.dart';
+import 'package:kmitl64app/pages/login/signin_field_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class DocumentCheckPage extends StatefulWidget {
   var data;
@@ -12,6 +15,15 @@ class DocumentCheckPage extends StatefulWidget {
 }
 
 class _DocumentCheckPageState extends State<DocumentCheckPage> {
+  void _getEventAttendance() async {
+    var resHomepage = await CallApi().getData('event/get_all_event/');
+    var bodyHomepage = json.decode(resHomepage.body);
+
+    setState(() {
+      widget.data = bodyHomepage;
+    });
+  }
+
   Widget dataAttendance() {
     return Expanded(
         child: widget.data != null
@@ -172,7 +184,8 @@ class _DocumentCheckPageState extends State<DocumentCheckPage> {
                                               MaterialPageRoute(
                                                   builder: (context) =>
                                                       CheckDocumentDetailPage(
-                                                          data: widget.data[index])),
+                                                          data: widget
+                                                              .data[index])),
                                             );
                                           }),
                                     )
@@ -194,6 +207,26 @@ class _DocumentCheckPageState extends State<DocumentCheckPage> {
             child: Scaffold(
               appBar: AppBar(
                   title: Text("Document Checking"),
+                  actions: <Widget>[
+                    IconButton(
+                        icon: const Icon(Icons.refresh),
+                        onPressed: () async {
+                          _getEventAttendance();
+                        }),
+                    IconButton(
+                        icon: const Icon(Icons.exit_to_app),
+                        onPressed: () async {
+                          SharedPreferences localStorage =
+                              await SharedPreferences.getInstance();
+                          localStorage.clear();
+                          
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => LogInPage()),
+                          );
+                        })
+                  ],
                   bottom:
                       TabBar(indicatorColor: Colors.amberAccent, tabs: <Tab>[
                     Tab(text: "All Event", icon: Icon(Icons.event)),
