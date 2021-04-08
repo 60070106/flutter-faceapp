@@ -415,8 +415,8 @@ class _RegisterPageState extends State<RegisterPage> {
                                       return 'กรุณากรอกรหัสผ่าน';
                                     }
                                     print(regex.hasMatch(value));
-                                    if (!regex.hasMatch(value)) {
-                                      return 'รหัสผ่านไม่ถูกต้อง';
+                                    if (!regex.hasMatch(value) & !(value.length < 8)) {
+                                      return 'รหัสผ่านต้องมี 8 หลัก และประกอบไปด้วย\n    ตัวพิมพ์ใหญ่ A-Z \n    ตัวพิมพ์เล็ก a-z \n    ตัวเลข 0-9 และเครื่องหมาย';
                                     }
                                     return null;
                                   },
@@ -443,8 +443,8 @@ class _RegisterPageState extends State<RegisterPage> {
                                     if (value == null || value.isEmpty) {
                                       return 'กรุณากรอกยืนยันรหัสผ่าน';
                                     }
-                                    if (value != passwordController.text) {
-                                      return 'รหัสผ่านไม่ถูกต้อง';
+                                    if (value != passwordController.value.text) {
+                                      return 'ยืนยันรหัสผ่านไม่ถูกต้อง';
                                     }
                                     return null;
                                   },
@@ -480,8 +480,14 @@ class _RegisterPageState extends State<RegisterPage> {
                                           ? null
                                           : () async {
                                               if (_formKey.currentState
-                                                  .validate()) {}
-                                              _takePicture(_image);
+                                                  .validate()) {
+                                                    _takePicture(_image);
+                                                  }
+                                              else{
+                                                setState(() {
+                                                  _isLoading = false;
+                                                });
+                                              }
                                             }),
                                 ),
                               ],

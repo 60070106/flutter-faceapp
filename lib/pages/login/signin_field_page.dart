@@ -85,7 +85,7 @@ class _LogInPageState extends State<LogInPage> {
                                     Icons.account_circle,
                                     color: Colors.grey,
                                   ),
-                                  labelText: "ชื่อผุ้ใช้",
+                                  labelText: "ชื่อผู้ใช้",
                                   labelStyle: TextStyle(
                                       color: Color(0xFF9b9b9b),
                                       fontSize: 15,
