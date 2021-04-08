@@ -377,7 +377,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                         fontSize: 15,
                                         fontWeight: FontWeight.normal),
                                   ),
-                                  textInputAction: TextInputAction.done,
+                                  textInputAction: TextInputAction.next,
                                   validator: (value) {
                                     if (value == null || value.isEmpty) {
                                       return 'กรุณากรอก Email';
@@ -407,12 +407,14 @@ class _RegisterPageState extends State<RegisterPage> {
                                   ),
                                   textInputAction: TextInputAction.next,
                                   validator: (value) {
+                                    print(value);
                                     Pattern pattern =
-                                        r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$';
+                                        r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[ !"#$%&()*+,-./:;<=>?@[\]^_`{|}~]).{8,}$';
                                     RegExp regex = new RegExp(pattern);
                                     if (value == null || value.isEmpty) {
                                       return 'กรุณากรอกรหัสผ่าน';
                                     }
+                                    print(regex.hasMatch(value));
                                     if (!regex.hasMatch(value)) {
                                       return 'รหัสผ่านไม่ถูกต้อง';
                                     }
@@ -436,7 +438,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                         fontSize: 15,
                                         fontWeight: FontWeight.normal),
                                   ),
-                                  textInputAction: TextInputAction.next,
+                                  textInputAction: TextInputAction.send,
                                   validator: (value) {
                                     if (value == null || value.isEmpty) {
                                       return 'กรุณากรอกยืนยันรหัสผ่าน';
