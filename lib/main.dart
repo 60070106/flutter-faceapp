@@ -91,6 +91,7 @@ class _MyAppState extends State<MyApp> {
                       : userData['is_approver']
                           ? DocumentCheckPage(
                               data: eventData,
+                              user: userData,
                             )
                           : LogInPage()
               : LogInPage()),

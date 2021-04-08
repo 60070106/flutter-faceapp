@@ -222,8 +222,10 @@ class _LogInPageState extends State<LogInPage> {
         var res_approver = await CallApi().getData('event/get_all_event/');
         var body_approver = json.decode(res_approver.body);
 
+        var userApprover = json.decode(userJson);
+
         Navigator.push(context,
-            new MaterialPageRoute(builder: (context) => DocumentCheckPage(data: body_approver)));
+            new MaterialPageRoute(builder: (context) => DocumentCheckPage(data: body_approver, user: userApprover)));
       }
     } else if (body['success'] = false) {
       _showMsg(body['detail']);
