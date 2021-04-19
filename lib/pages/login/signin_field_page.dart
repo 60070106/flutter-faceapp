@@ -154,9 +154,18 @@ class _LogInPageState extends State<LogInPage> {
                                     onPressed: _isLoading
                                         ? null
                                         : () async {
+                                            setState(() {
+                                              _isLoading = true;
+                                            });
+
                                             if (_formKey.currentState
-                                                .validate()) {}
-                                            _login;
+                                                .validate()) {
+                                              _login();
+                                            } else {
+                                              setState(() {
+                                                _isLoading = false;
+                                              });
+                                            }
                                           }),
                               ),
                             ],
@@ -227,10 +236,10 @@ class _LogInPageState extends State<LogInPage> {
         var data = {"username": user['username']};
 
         var resDataAttendance =
-            await CallApi().postData(data, 'event/camp/attendance/');
+            await CallApi().postData(data, 'event_camp_attendance/');
         var bodyDataAttendance = json.decode(resDataAttendance.body);
 
-        var resHomepage = await CallApi().getData('event/get_all_event/');
+        var resHomepage = await CallApi().getData('get_all_event/');
         var bodyHomepage = json.decode(resHomepage.body);
 
         Navigator.push(
@@ -243,7 +252,9 @@ class _LogInPageState extends State<LogInPage> {
                     )));
       }
       if (body['user']['is_organizer']) {
-        var res_organizer = await CallApi().getData('event/get_all_event/');
+        // ignore: non_constant_identifier_names
+        var res_organizer = await CallApi().getData('get_all_event/');
+        // ignore: non_constant_identifier_names
         var body_organizer = json.decode(res_organizer.body);
 
         Navigator.push(
@@ -252,7 +263,7 @@ class _LogInPageState extends State<LogInPage> {
                 builder: (context) => OrganizerPage(data: body_organizer)));
       }
       if (body['user']['is_approver']) {
-        var res_approver = await CallApi().getData('event/get_all_event/');
+        var res_approver = await CallApi().getData('get_all_event/');
         var body_approver = json.decode(res_approver.body);
 
         var userApprover = json.decode(userJson);

@@ -177,7 +177,7 @@ class _EventRegisterPageState extends State<EventRegisterPage> {
                                         print(data);
 
                                         var res = await CallApi()
-                                            .postData(data, 'event/camp/register/');
+                                            .postData(data, 'event_camp_register/');
                                         var body = jsonDecode(res.body);
 
                                         print(body);
@@ -185,7 +185,7 @@ class _EventRegisterPageState extends State<EventRegisterPage> {
                                         if (body['success']) {
                                           var campRes = await CallApi()
                                               .postData(
-                                                  data, 'event/camp/people/');
+                                                  data, 'event_camp_people/');
                                           var campBody =
                                               jsonDecode(campRes.body);
 
@@ -256,7 +256,7 @@ class _EventRegisterPageState extends State<EventRegisterPage> {
                                         };
 
                                         var res = await CallApi().postData(
-                                            data, 'event/camp/people/');
+                                            data, 'event_camp_people/');
                                         var body = jsonDecode(res.body);
 
                                         Navigator.push(

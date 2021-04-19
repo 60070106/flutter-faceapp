@@ -452,7 +452,7 @@ class _EditEventPageState extends State<EditEventPage> {
                                       };
 
                                       var res = await CallApi()
-                                          .postData(editData, 'event/edit/');
+                                          .postData(editData, 'event_edit/');
                                       var body = json.decode(res.body);
 
                                       print(body);

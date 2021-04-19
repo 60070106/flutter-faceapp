@@ -29,10 +29,10 @@ class _HomePageState extends State<HomePage> {
     _dataAvailiable = [];
 
     var resDataAttendance =
-        await CallApi().postData(data, 'event/camp/attendance/');
+        await CallApi().postData(data, 'event_camp_attendance/');
     var bodyDataAttendance = json.decode(resDataAttendance.body);
 
-    var resHomepage = await CallApi().getData('event/get_all_event/');
+    var resHomepage = await CallApi().getData('get_all_event/');
     var bodyHomepage = json.decode(resHomepage.body);
 
     setState(() {
@@ -418,7 +418,7 @@ class _HomePageState extends State<HomePage> {
                               };
 
                               var res = await CallApi()
-                                  .postData(data, 'event/get/detail/');
+                                  .postData(data, 'event_get_detail/');
                               var body = jsonDecode(res.body);
 
                               Navigator.push(

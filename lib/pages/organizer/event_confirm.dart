@@ -253,14 +253,14 @@ class _EventConfirmPageState extends State<EventConfirmPage> {
                               widget.data["imgpath"] = base64Image;
 
                               var res = await CallApi()
-                                  .postData(widget.data, 'event/register/');
+                                  .postData(widget.data, 'event_register/');
                               var body = jsonDecode(res.body);
 
                               print(body);
 
                               if (body['success']) {
                                 var resHomepage = await CallApi()
-                                    .getData('event/get_all_event/');
+                                    .getData('get_all_event/');
                                 var bodyHomepage =
                                     json.decode(resHomepage.body);
 

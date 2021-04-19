@@ -178,13 +178,13 @@ class _CheckinIdentityPageState extends State<CheckinIdentityPage> {
                           widget.data["imgpath"] = base64Image;
 
                           var res = await CallApi()
-                              .postData(widget.data, 'event/camp/check/');
+                              .postData(widget.data, 'event_camp_check/');
                           var body = jsonDecode(res.body);
 
                           if (body['success']) {
                             print(body);
                             var resHomepage =
-                                await CallApi().getData('event/get_all_event/');
+                                await CallApi().getData('get_all_event/');
                             var bodyHomepage = json.decode(resHomepage.body);
 
                             var resDataAttendance = await CallApi().postData(

@@ -40,10 +40,10 @@ class _MyAppState extends State<MyApp> {
     var data = {"username": user['username']};
 
     var resDataAttendance =
-        await CallApi().postData(data, 'event/camp/attendance/');
+        await CallApi().postData(data, 'event_camp_attendance/');
     var bodyDataAttendance = json.decode(resDataAttendance.body);
 
-    var resHomepage = await CallApi().getData('event/get_all_event/');
+    var resHomepage = await CallApi().getData('get_all_event/');
     var bodyHomepage = json.decode(resHomepage.body);
 
     // localStorage.setString('data', json.encode(bodyHomepage));

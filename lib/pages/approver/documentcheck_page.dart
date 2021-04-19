@@ -21,7 +21,7 @@ class _DocumentCheckPageState extends State<DocumentCheckPage> {
   void _getEventAttendance() async {
     _checkedEvent = [];
 
-    var resHomepage = await CallApi().getData('event/get_all_event/');
+    var resHomepage = await CallApi().getData('get_all_event/');
     var bodyHomepage = json.decode(resHomepage.body);
 
     setState(() {

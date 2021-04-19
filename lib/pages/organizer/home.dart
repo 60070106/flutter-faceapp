@@ -47,7 +47,7 @@ class _OrganizerPageState extends State<OrganizerPage> {
   FileType _pickingType;
 
   void _getEventAttendance() async {
-    var resHomepage = await CallApi().getData('event/get_all_event/');
+    var resHomepage = await CallApi().getData('get_all_event/');
     var bodyHomepage = json.decode(resHomepage.body);
 
     setState(() {
