@@ -55,7 +55,7 @@ class _CheckinIdentityPageState extends State<CheckinIdentityPage> {
                     width: MediaQuery.of(context).size.width * 0.45,
                     height: MediaQuery.of(context).size.height * 0.3,
                     child: Image.memory(
-                      base64.decode(widget.userdata['image'][0]['imgpath']),
+                      base64.decode(widget.userdata['image']),
                       fit: BoxFit.fill,
                     ),
                   ),
@@ -189,7 +189,7 @@ class _CheckinIdentityPageState extends State<CheckinIdentityPage> {
 
                             var resDataAttendance = await CallApi().postData(
                                 {"username": widget.userdata['username']},
-                                'event/camp/attendance/');
+                                'event_camp_attendance/');
                             var bodyDataAttendance =
                                 json.decode(resDataAttendance.body);
 

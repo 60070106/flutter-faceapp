@@ -59,7 +59,7 @@ class _EventConfirmPageState extends State<EventConfirmPage> {
                     width: MediaQuery.of(context).size.width * 0.45,
                     height: MediaQuery.of(context).size.height * 0.3,
                     child: Image.memory(
-                      base64.decode(widget.userdata['image'][0]['imgpath']),
+                      base64.decode(widget.userdata['image']),
                       fit: BoxFit.fill,
                     ),
                   ),

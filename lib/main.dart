@@ -34,31 +34,19 @@ class _MyAppState extends State<MyApp> {
     SharedPreferences localStorage = await SharedPreferences.getInstance();
 
     var token = localStorage.getString('token');
-    var userJson = localStorage.getString('user');
-
-    var user = json.decode(userJson);
-    var data = {"username": user['username']};
-
-    var resDataAttendance =
-        await CallApi().postData(data, 'event_camp_attendance/');
-    var bodyDataAttendance = json.decode(resDataAttendance.body);
-
-    var resHomepage = await CallApi().getData('get_all_event/');
-    var bodyHomepage = json.decode(resHomepage.body);
-
-    // localStorage.setString('data', json.encode(bodyHomepage));
-    // localStorage.setString('attendance', json.encode(bodyDataAttendance));
-    // var event = localStorage.getString('data');
-    // var attendance = localStorage.getString('attendance');
-
-    // ignore: non_constant_identifier_names
-    // var event_Data = json.decode(event);
-    // var attendanceData = json.decode(attendance);
-    // print(user);
-    // print(eventData.length);
-    // print(attendanceData.length);
 
     if (token != null) {
+      var userJson = localStorage.getString('user');
+
+      var user = json.decode(userJson);
+      var data = {"username": user['username']};
+
+      var resDataAttendance =
+          await CallApi().postData(data, 'event_camp_attendance/');
+      var bodyDataAttendance = json.decode(resDataAttendance.body);
+
+      var resHomepage = await CallApi().getData('get_all_event/');
+      var bodyHomepage = json.decode(resHomepage.body);
       eventData = bodyHomepage;
       userData = user;
       eventAttendance = bodyDataAttendance;

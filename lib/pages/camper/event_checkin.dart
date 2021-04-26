@@ -122,7 +122,7 @@ class _EventCheckPageState extends State<EventCheckPage> {
                       Padding(
                         padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
                         child: Text(
-                          "อีแมว",
+                          widget.organizer_data['email'],
                           style: TextStyle(fontSize: 16),
                         ),
                       ),
@@ -132,26 +132,18 @@ class _EventCheckPageState extends State<EventCheckPage> {
                               children: [
                                 Center(
                                   child: Container(
-                                    width: MediaQuery.of(context).size.height *
-                                        0.2,
+                                    width: 130,
                                     child: Padding(
-                                      padding: const EdgeInsets.only(right: 10),
+                                      padding: const EdgeInsets.only(right: 5),
                                       child: FlatButton(
-                                          child: Padding(
-                                            padding: EdgeInsets.only(
-                                                top: 8,
-                                                bottom: 8,
-                                                left: 5,
-                                                right: 5),
-                                            child: Text(
-                                              'Check In',
-                                              textDirection: TextDirection.ltr,
-                                              style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 15.0,
-                                                decoration: TextDecoration.none,
-                                                fontWeight: FontWeight.normal,
-                                              ),
+                                          child: Text(
+                                            'Check In',
+                                            textDirection: TextDirection.ltr,
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 15.0,
+                                              decoration: TextDecoration.none,
+                                              fontWeight: FontWeight.normal,
                                             ),
                                           ),
                                           color: Colors.lightGreen,
@@ -207,23 +199,16 @@ class _EventCheckPageState extends State<EventCheckPage> {
                                     width: MediaQuery.of(context).size.height *
                                         0.2,
                                     child: Padding(
-                                      padding: const EdgeInsets.only(left: 10),
+                                      padding: const EdgeInsets.only(left: 5),
                                       child: FlatButton(
-                                          child: Padding(
-                                            padding: EdgeInsets.only(
-                                                top: 8,
-                                                bottom: 8,
-                                                left: 5,
-                                                right: 5),
-                                            child: Text(
-                                              'Check Out',
-                                              textDirection: TextDirection.ltr,
-                                              style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 15.0,
-                                                decoration: TextDecoration.none,
-                                                fontWeight: FontWeight.normal,
-                                              ),
+                                          child: Text(
+                                            'Check Out',
+                                            textDirection: TextDirection.ltr,
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 15.0,
+                                              decoration: TextDecoration.none,
+                                              fontWeight: FontWeight.normal,
                                             ),
                                           ),
                                           color: Colors.red,

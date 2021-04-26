@@ -19,6 +19,7 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
+
 class _HomePageState extends State<HomePage> {
   int _Page = 0;
   var _dataAvailiable = [];
@@ -41,6 +42,7 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+
   Future getImage() async {
     final pickedFile = await picker.getImage(source: ImageSource.gallery);
 
@@ -53,6 +55,8 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget dataAttendance() {
+    _dataAvailiable = [];
+
     for (var i = 0; i < widget.data.length; i++) {
       if (widget.data[i]['is_approved'] == true) {
         _dataAvailiable.add(widget.data[i]);
@@ -66,7 +70,7 @@ class _HomePageState extends State<HomePage> {
                     ? Container(
                         child: Padding(
                           child: Text(
-                              "It's seem like you aren't registered any event yet.",
+                              "There are no any approved event yet.",
                               style: TextStyle(color: Colors.black38)),
                           padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
                         ),
@@ -260,7 +264,6 @@ class _HomePageState extends State<HomePage> {
                                                                           index])),
                                                     );
 
-                                                    setState(() {});
                                                   }),
                                             )
                                           ],

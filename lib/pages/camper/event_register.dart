@@ -129,6 +129,7 @@ class _EventRegisterPageState extends State<EventRegisterPage> {
                     ),
                     Padding(padding: EdgeInsets.fromLTRB(0, 10, 0, 0)),
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         Center(
                           child: Padding(

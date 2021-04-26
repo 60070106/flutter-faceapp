@@ -1,8 +1,11 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:kmitl64app/api.dart';
 import 'package:kmitl64app/pages/organizer/event_edit.dart';
 import 'package:timeline_tile/timeline_tile.dart';
+
+import 'attendance_detail_page.dart';
 
 class OrganizerEventDetailPage extends StatefulWidget {
   var data;
@@ -318,6 +321,49 @@ class _OrganizerEventDetailPageState extends State<OrganizerEventDetailPage> {
                         Padding(padding: EdgeInsets.fromLTRB(0, 10, 0, 0)),
                       ],
                     ),
+                    widget.data['is_approved'] ?
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 8.0),
+                      child: Center(
+                        child: FlatButton(
+                            child: Center(
+                              child: Padding(
+                                padding: EdgeInsets.only(
+                                    top: 8, bottom: 8, left: 10, right: 10),
+                                child: Text(
+                                  'ดูประวัติการลงชื่อเข้า-ออก',
+                                  textDirection: TextDirection.ltr,
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 15.0,
+                                    decoration: TextDecoration.none,
+                                    fontWeight: FontWeight.normal,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            color: Colors.blueAccent,
+                            disabledColor: Colors.grey,
+                            shape: new RoundedRectangleBorder(
+                                borderRadius: new BorderRadius.circular(20.0)),
+                            onPressed: () async {
+
+                              var eventName = {"event_name" : widget.data['event_name']};
+                              var res = await CallApi()
+                                          .postData(eventName, 'event_attendance_detail/');
+                              var body = json.decode(res.body);
+
+                              print(body);
+
+                              Navigator.push(
+                                  context,
+                                  new MaterialPageRoute(
+                                      builder: (context) =>
+                                          AttendanceDetailPage(data: body)));
+                            }),
+                      ),
+                    )
+                    : Container()
                   ]))
         ],
       ))),

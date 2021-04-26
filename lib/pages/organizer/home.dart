@@ -1142,7 +1142,7 @@ class _OrganizerPageState extends State<OrganizerPage> {
 
                                           var documentList = [];
                                           // print(documentList);
-
+                                          
                                           _paths.forEach((k, v) {
                                             File file = File(v);
                                             String base64Pdf = base64Encode(
@@ -1152,7 +1152,7 @@ class _OrganizerPageState extends State<OrganizerPage> {
                                           });
 
                                           // print(documentList);
-
+                                          
                                           var eventData = {
                                             'imgevent': base64Image,
                                             'organizer': user['username'],
@@ -1168,8 +1168,6 @@ class _OrganizerPageState extends State<OrganizerPage> {
                                             'imgpath': '',
                                           };
 
-                                          // print(eventData);
-
                                           Navigator.push(
                                             context,
                                             MaterialPageRoute(
@@ -1178,7 +1176,6 @@ class _OrganizerPageState extends State<OrganizerPage> {
                                                       data: eventData,
                                                       userdata: user,
                                                     )
-                                                // builder: (context) => TestMyApp(),
                                                 ),
                                           );
                                         }),

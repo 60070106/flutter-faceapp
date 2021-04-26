@@ -175,13 +175,15 @@ class _CommendApprovedPageState extends State<CommendApprovedPage> {
                                         .getData('get_all_event/');
                                     var bodyHomepage =
                                         json.decode(resHomepage.body);
+                                    
 
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>
                                               DocumentCheckPage(
-                                                  data: bodyHomepage)),
+                                                user: user,
+                                                data: bodyHomepage)),
                                     );
                                   }
                                 },
