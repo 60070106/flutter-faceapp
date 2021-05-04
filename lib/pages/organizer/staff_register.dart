@@ -353,7 +353,7 @@ class _OrganizerEventDetailPageState extends State<OrganizerEventDetailPage> {
                                           .postData(eventName, 'event_attendance_detail/');
                               var body = json.decode(res.body);
 
-                              print(body);
+                              // print(body);
 
                               Navigator.push(
                                   context,

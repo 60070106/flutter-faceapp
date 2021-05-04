@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'event_checkin_identity.dart';
 
+
 class EventCheckPage extends StatefulWidget {
   var state;
   // ignore: non_constant_identifier_names
