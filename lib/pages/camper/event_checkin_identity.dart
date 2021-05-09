@@ -36,7 +36,8 @@ class _CheckinIdentityPageState extends State<CheckinIdentityPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text("Confirm your identity"),
+          title: Text("ยืนยันตัวตน"),
+          backgroundColor: Color(0xFF876aa4),
         ),
         body: Center(
             child: Column(
@@ -71,7 +72,7 @@ class _CheckinIdentityPageState extends State<CheckinIdentityPage> {
                                 borderRadius: BorderRadius.only(
                                     topRight: Radius.circular(8)),
                                 child: Image(
-                                  fit: BoxFit.fitWidth,
+                                  fit: BoxFit.fill,
                                   image: FileImage(_image),
                                   width:
                                       MediaQuery.of(context).size.width * 0.45,

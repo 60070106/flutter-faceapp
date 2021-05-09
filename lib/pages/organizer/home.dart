@@ -254,10 +254,10 @@ class _OrganizerPageState extends State<OrganizerPage> {
                                                                 borderRadius: BorderRadius.only(
                                                                     topRight: Radius
                                                                         .circular(
-                                                                            8),
+                                                                            20),
                                                                     bottomRight:
                                                                         Radius.circular(
-                                                                            8)),
+                                                                            20)),
                                                                 child:
                                                                     Container(
                                                                   width: MediaQuery.of(
@@ -265,7 +265,11 @@ class _OrganizerPageState extends State<OrganizerPage> {
                                                                           .size
                                                                           .width *
                                                                       0.4,
-                                                                  height: 180,
+                                                                  height: MediaQuery.of(
+                                                                              context)
+                                                                          .size
+                                                                          .height *
+                                                                      0.2639,
                                                                   child: Image
                                                                       .memory(
                                                                     base64.decode(
@@ -467,7 +471,7 @@ class _OrganizerPageState extends State<OrganizerPage> {
                                                                             width:
                                                                                 MediaQuery.of(context).size.width * 0.4,
                                                                             height:
-                                                                                180,
+                                                                                MediaQuery.of(context).size.height * 0.2639,
                                                                             child:
                                                                                 Image.memory(
                                                                               base64.decode(_availiable[index]['event_image']),
@@ -651,7 +655,7 @@ class _OrganizerPageState extends State<OrganizerPage> {
                                                                               borderRadius: BorderRadius.only(topRight: Radius.circular(8), bottomRight: Radius.circular(8)),
                                                                               child: Container(
                                                                                 width: MediaQuery.of(context).size.width * 0.4,
-                                                                                height: 180,
+                                                                                height: MediaQuery.of(context).size.height * 0.2639,
                                                                                 child: Image.memory(
                                                                                   base64.decode(_unavailiable[index]['event_image']),
                                                                                   fit: BoxFit.fitHeight,
@@ -720,7 +724,8 @@ class _OrganizerPageState extends State<OrganizerPage> {
             child: Scaffold(
               resizeToAvoidBottomInset: false,
               appBar: AppBar(
-                  title: Text("Organizer Event"),
+                  title: Text("ส่วนจัดการกิจกรรม"),
+                  backgroundColor: Color(0xFF876aa4),
                   actions: <Widget>[
                     IconButton(
                         icon: const Icon(Icons.refresh),
@@ -733,7 +738,7 @@ class _OrganizerPageState extends State<OrganizerPage> {
                           SharedPreferences localStorage =
                               await SharedPreferences.getInstance();
                           localStorage.clear();
-                          
+
                           Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -743,21 +748,26 @@ class _OrganizerPageState extends State<OrganizerPage> {
                   ],
                   bottom:
                       TabBar(indicatorColor: Colors.amberAccent, tabs: <Tab>[
-                    Tab(text: "All Event", icon: Icon(Icons.event)),
-                    Tab(text: "Create Event", icon: Icon(Icons.add))
+                    Tab(text: "กิจกรรมทั้งหมด", icon: Icon(Icons.event)),
+                    Tab(text: "สร้างกิจกรรมใหม่", icon: Icon(Icons.add))
                   ])),
               body: TabBarView(children: [
                 Center(
                   child: Column(
                     children: [
-                      Container(
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
+                      Center(
+                        child: Container(
+                          // color: Colors.yellow,
+                          // width: MediaQuery.of(context).size.width * 0.8,
                           child: Row(
                             children: [
                               Padding(
-                                padding: const EdgeInsets.all(8.0),
+                                padding: const EdgeInsets.only(left: 20),
                                 child: ElevatedButton(
+                                    style: ButtonStyle(
+                                        backgroundColor:
+                                            MaterialStateProperty.all<Color>(
+                                                Color(0xFF6b6272))),
                                     onPressed: () async {
                                       setState(() {
                                         _availiable = [];
@@ -765,11 +775,16 @@ class _OrganizerPageState extends State<OrganizerPage> {
                                         _Page = 0;
                                       });
                                     },
-                                    child: Text("All")),
+                                    child: Text("ทั้งหมด")),
                               ),
+                              Spacer(),
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: ElevatedButton(
+                                    style: ButtonStyle(
+                                        backgroundColor:
+                                            MaterialStateProperty.all<Color>(
+                                                Color(0xFF6b6272))),
                                     onPressed: () async {
                                       setState(() {
                                         _availiable = [];
@@ -777,11 +792,16 @@ class _OrganizerPageState extends State<OrganizerPage> {
                                         _Page = 1;
                                       });
                                     },
-                                    child: Text("Approved")),
+                                    child: Text("อนุมัติแล้ว")),
                               ),
+                              Spacer(),
                               Padding(
-                                padding: const EdgeInsets.all(8.0),
+                                padding: const EdgeInsets.only(right: 20),
                                 child: ElevatedButton(
+                                    style: ButtonStyle(
+                                        backgroundColor:
+                                            MaterialStateProperty.all<Color>(
+                                                Color(0xFF6b6272))),
                                     onPressed: () async {
                                       setState(() {
                                         _availiable = [];
@@ -789,7 +809,7 @@ class _OrganizerPageState extends State<OrganizerPage> {
                                         _Page = 2;
                                       });
                                     },
-                                    child: Text("Unapproved")),
+                                    child: Text("ยังไม่อนุมัติ")),
                               )
                             ],
                           ),
@@ -1032,154 +1052,183 @@ class _OrganizerPageState extends State<OrganizerPage> {
                                           child:
                                               const CircularProgressIndicator())
                                       : _paths != null
-                                          ? Container(
-                                              child: _paths.length != 0
-                                                  ? Column(
-                                                      children:
-                                                          List<Widget>.generate(
-                                                              _paths.length,
-                                                              (index) {
-                                                        final String name =
-                                                            'File ' +
-                                                                (index +
-                                                                        1)
-                                                                    .toString() +
-                                                                ': ' +
-                                                                _paths
-                                                                        .keys
-                                                                        .toList()[
-                                                                    index];
-                                                        final path = _paths
-                                                            .values
-                                                            .toList()[index]
-                                                            .toString();
-                                                        return Column(
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .start,
-                                                          children: [
-                                                            Text(
-                                                              name,
-                                                              style: TextStyle(
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold),
-                                                            ),
-                                                            Text(path),
-                                                            Center(
-                                                                child:
-                                                                    PdfDocumentLoader
-                                                                        .openData(
-                                                              base64.decode(
-                                                                  base64Encode(
-                                                                      File(path)
-                                                                          .readAsBytesSync())),
-                                                              documentBuilder: (context,
-                                                                      pdfDocument,
-                                                                      pageCount) =>
-                                                                  LayoutBuilder(
-                                                                      builder: (context,
-                                                                              constraints) =>
-                                                                          Container(
-                                                                            height:
-                                                                                MediaQuery.of(context).size.height * 0.65,
-                                                                            child: ListView.builder(
-                                                                                shrinkWrap: true,
-                                                                                itemCount: pageCount,
-                                                                                itemBuilder: (context, index) => Container(
-                                                                                    margin: EdgeInsets.all(8),
-                                                                                    padding: EdgeInsets.all(8),
-                                                                                    color: Colors.black12,
-                                                                                    child: PdfPageView(
-                                                                                      pdfDocument: pdfDocument,
-                                                                                      pageNumber: index + 1,
-                                                                                    ))),
-                                                                          )),
-                                                            )),
-                                                            Divider()
-                                                          ],
+                                          ? Column(
+                                              children: [
+                                                Container(
+                                                    child: _paths.length != 0
+                                                        ? Column(
+                                                            children: List<
+                                                                    Widget>.generate(
+                                                                _paths.length,
+                                                                (index) {
+                                                              final String
+                                                                  name =
+                                                                  'File ' +
+                                                                      (index +
+                                                                              1)
+                                                                          .toString() +
+                                                                      ': ' +
+                                                                      _paths.keys
+                                                                              .toList()[
+                                                                          index];
+                                                              final path = _paths
+                                                                  .values
+                                                                  .toList()[
+                                                                      index]
+                                                                  .toString();
+                                                              return Column(
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .start,
+                                                                children: [
+                                                                  Text(
+                                                                    name,
+                                                                    style: TextStyle(
+                                                                        fontWeight:
+                                                                            FontWeight.bold),
+                                                                  ),
+                                                                  Text(path),
+                                                                  Center(
+                                                                      child: PdfDocumentLoader
+                                                                          .openData(
+                                                                    base64.decode(
+                                                                        base64Encode(
+                                                                            File(path).readAsBytesSync())),
+                                                                    documentBuilder: (context,
+                                                                            pdfDocument,
+                                                                            pageCount) =>
+                                                                        LayoutBuilder(
+                                                                            builder: (context, constraints) =>
+                                                                                Container(
+                                                                                  height: MediaQuery.of(context).size.height * 0.65,
+                                                                                  child: ListView.builder(
+                                                                                      shrinkWrap: true,
+                                                                                      itemCount: pageCount,
+                                                                                      itemBuilder: (context, index) => Container(
+                                                                                          margin: EdgeInsets.all(8),
+                                                                                          padding: EdgeInsets.all(8),
+                                                                                          color: Colors.black12,
+                                                                                          child: PdfPageView(
+                                                                                            pdfDocument: pdfDocument,
+                                                                                            pageNumber: index + 1,
+                                                                                          ))),
+                                                                                )),
+                                                                  )),
+                                                                  Divider()
+                                                                ],
+                                                              );
+                                                            }),
+                                                          )
+                                                        : Container()),
+                                                Padding(
+                                                  padding: const EdgeInsets.all(
+                                                      10.0),
+                                                  child: FlatButton(
+                                                      child: Padding(
+                                                        padding:
+                                                            EdgeInsets.only(
+                                                                top: 8,
+                                                                bottom: 8,
+                                                                left: 10,
+                                                                right: 10),
+                                                        child: Text(
+                                                          'สร้างกิจกรรม',
+                                                          textDirection:
+                                                              TextDirection.ltr,
+                                                          style: TextStyle(
+                                                            color: Colors.white,
+                                                            fontSize: 15.0,
+                                                            decoration:
+                                                                TextDecoration
+                                                                    .none,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .normal,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      color: Colors.red,
+                                                      disabledColor:
+                                                          Colors.grey,
+                                                      shape: new RoundedRectangleBorder(
+                                                          borderRadius:
+                                                              new BorderRadius
+                                                                      .circular(
+                                                                  20.0)),
+                                                      onPressed: () async {
+                                                        SharedPreferences
+                                                            localStorage =
+                                                            await SharedPreferences
+                                                                .getInstance();
+                                                        var userJson =
+                                                            localStorage
+                                                                .getString(
+                                                                    'user');
+                                                        var user = json
+                                                            .decode(userJson);
+
+                                                        String base64Image =
+                                                            base64Encode(_image
+                                                                .readAsBytesSync());
+
+                                                        var documentList = [];
+                                                        // print(documentList);
+
+                                                        _paths.forEach((k, v) {
+                                                          File file = File(v);
+                                                          String base64Pdf =
+                                                              base64Encode(file
+                                                                  .readAsBytesSync());
+                                                          var dataPDf = {
+                                                            "data": base64Pdf
+                                                          };
+                                                          documentList
+                                                              .add(dataPDf);
+                                                        });
+
+                                                        // print(documentList);
+
+                                                        var eventData = {
+                                                          'imgevent':
+                                                              base64Image,
+                                                          'organizer':
+                                                              user['username'],
+                                                          'location':
+                                                              locationController
+                                                                  .text,
+                                                          'duration':
+                                                              eventStartController
+                                                                      .text +
+                                                                  " - " +
+                                                                  eventEndController
+                                                                      .text,
+                                                          'event_name':
+                                                              eventNameController
+                                                                  .text,
+                                                          'detail':
+                                                              detailController
+                                                                  .text,
+                                                          'documents':
+                                                              documentList,
+                                                          'imgpath': '',
+                                                        };
+
+                                                        Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                              builder: (context) =>
+                                                                  EventConfirmPage(
+                                                                    data:
+                                                                        eventData,
+                                                                    userdata:
+                                                                        user,
+                                                                  )),
                                                         );
                                                       }),
-                                                    )
-                                                  : Container())
-                                          : Container(),
-                                  Padding(
-                                    padding: const EdgeInsets.all(10.0),
-                                    child: FlatButton(
-                                        child: Padding(
-                                          padding: EdgeInsets.only(
-                                              top: 8,
-                                              bottom: 8,
-                                              left: 10,
-                                              right: 10),
-                                          child: Text(
-                                            'Create Event',
-                                            textDirection: TextDirection.ltr,
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 15.0,
-                                              decoration: TextDecoration.none,
-                                              fontWeight: FontWeight.normal,
-                                            ),
-                                          ),
-                                        ),
-                                        color: Colors.red,
-                                        disabledColor: Colors.grey,
-                                        shape: new RoundedRectangleBorder(
-                                            borderRadius:
-                                                new BorderRadius.circular(
-                                                    20.0)),
-                                        onPressed: () async {
-                                          SharedPreferences localStorage =
-                                              await SharedPreferences
-                                                  .getInstance();
-                                          var userJson =
-                                              localStorage.getString('user');
-                                          var user = json.decode(userJson);
-
-                                          String base64Image = base64Encode(
-                                              _image.readAsBytesSync());
-
-                                          var documentList = [];
-                                          // print(documentList);
-                                          
-                                          _paths.forEach((k, v) {
-                                            File file = File(v);
-                                            String base64Pdf = base64Encode(
-                                                file.readAsBytesSync());
-                                            var dataPDf = {"data": base64Pdf};
-                                            documentList.add(dataPDf);
-                                          });
-
-                                          // print(documentList);
-                                          
-                                          var eventData = {
-                                            'imgevent': base64Image,
-                                            'organizer': user['username'],
-                                            'location': locationController.text,
-                                            'duration':
-                                                eventStartController.text +
-                                                    " - " +
-                                                    eventEndController.text,
-                                            'event_name':
-                                                eventNameController.text,
-                                            'detail': detailController.text,
-                                            'documents': documentList,
-                                            'imgpath': '',
-                                          };
-
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    EventConfirmPage(
-                                                      data: eventData,
-                                                      userdata: user,
-                                                    )
                                                 ),
-                                          );
-                                        }),
-                                  ),
+                                              ],
+                                            )
+                                          : Container(),
                                 ],
                               ),
                             ],

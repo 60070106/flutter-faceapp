@@ -47,9 +47,9 @@ class _LogInPageState extends State<LogInPage> {
                   end: Alignment.bottomRight,
                   stops: [0.0, 0.4, 0.9],
                   colors: [
-                    Color(0xFFFF835F),
-                    Color(0xFFFC663C),
-                    Color(0xFFFF3F1A),
+                    Color(0xFFbd9dc2),
+                    Color(0xFF876aa4),
+                    Color(0xFF400643),
                   ],
                 ),
               ),
@@ -146,7 +146,7 @@ class _LogInPageState extends State<LogInPage> {
                                         ),
                                       ),
                                     ),
-                                    color: Color(0xFFFF835F),
+                                    color: Colors.red,
                                     disabledColor: Colors.grey,
                                     shape: new RoundedRectangleBorder(
                                         borderRadius:

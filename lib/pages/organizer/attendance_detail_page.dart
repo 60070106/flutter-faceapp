@@ -620,7 +620,7 @@ class _AttendanceDetailPageState extends State<AttendanceDetailPage> {
                                               widget.data['registerPeople']
                                                   .length),
                                           AmountPeopleSeries(
-                                              0,
+                                              1,
                                               widget.data['allPeopleSystem'] -
                                                   widget.data['registerPeople']
                                                       .length)

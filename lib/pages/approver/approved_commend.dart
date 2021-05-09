@@ -24,7 +24,8 @@ class _CommendApprovedPageState extends State<CommendApprovedPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Event Detail")),
+      appBar: AppBar(title: Text("รายละเอียดกิจกรรม"),
+      backgroundColor: Color(0xFF876aa4)),
       body: Container(
         child: SingleChildScrollView(
           child: Column(

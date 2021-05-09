@@ -19,7 +19,6 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
-
 class _HomePageState extends State<HomePage> {
   int _Page = 0;
   var _dataAvailiable = [];
@@ -41,7 +40,6 @@ class _HomePageState extends State<HomePage> {
       widget.eventAttendance = bodyDataAttendance;
     });
   }
-
 
   Future getImage() async {
     final pickedFile = await picker.getImage(source: ImageSource.gallery);
@@ -69,8 +67,7 @@ class _HomePageState extends State<HomePage> {
                 ? _dataAvailiable.length == 0
                     ? Container(
                         child: Padding(
-                          child: Text(
-                              "There are no any approved event yet.",
+                          child: Text("ยังไม่มีกิจกรรมใดถูกจัดขึ้นในเวลานี้...",
                               style: TextStyle(color: Colors.black38)),
                           padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
                         ),
@@ -225,18 +222,20 @@ class _HomePageState extends State<HomePage> {
                                                                     borderRadius: BorderRadius.only(
                                                                         topRight:
                                                                             Radius.circular(
-                                                                                8),
+                                                                                20),
                                                                         bottomRight:
                                                                             Radius.circular(
-                                                                                8)),
+                                                                                20)),
                                                                     child:
                                                                         Container(
                                                                       width: MediaQuery.of(context)
                                                                               .size
                                                                               .width *
                                                                           0.4,
-                                                                      height:
-                                                                          180,
+                                                                      height: MediaQuery.of(context)
+                                                                              .size
+                                                                              .height *
+                                                                          0.2639,
                                                                       child: Image
                                                                           .memory(
                                                                         base64.decode(_dataAvailiable[index]
@@ -263,7 +262,6 @@ class _HomePageState extends State<HomePage> {
                                                                       _dataAvailiable[
                                                                           index])),
                                                     );
-
                                                   }),
                                             )
                                           ],
@@ -386,15 +384,18 @@ class _HomePageState extends State<HomePage> {
                                         children: <Widget>[
                                           ClipRRect(
                                               borderRadius: BorderRadius.only(
-                                                  topRight: Radius.circular(8),
+                                                  topRight: Radius.circular(20),
                                                   bottomRight:
-                                                      Radius.circular(8)),
+                                                      Radius.circular(20)),
                                               child: Container(
                                                 width: MediaQuery.of(context)
                                                         .size
                                                         .width *
                                                     0.4,
-                                                height: 180,
+                                                height: MediaQuery.of(context)
+                                                        .size
+                                                        .height *
+                                                    0.2639,
                                                 child: Image.memory(
                                                   base64.decode(
                                                       widget.eventAttendance[
@@ -454,7 +455,7 @@ class _HomePageState extends State<HomePage> {
             child: Scaffold(
               resizeToAvoidBottomInset: false,
               appBar: AppBar(
-                  title: Text("Event Calendar"),
+                  title: Text("ปฏิทินกิจกรรม"),
                   actions: <Widget>[
                     IconButton(
                         icon: const Icon(Icons.refresh),
@@ -467,7 +468,7 @@ class _HomePageState extends State<HomePage> {
                           SharedPreferences localStorage =
                               await SharedPreferences.getInstance();
                           localStorage.clear();
-                          
+
                           Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -477,13 +478,15 @@ class _HomePageState extends State<HomePage> {
                   ],
                   bottom:
                       TabBar(indicatorColor: Colors.amberAccent, tabs: <Tab>[
-                    Tab(text: "Event Available", icon: Icon(Icons.person)),
+                    Tab(
+                        text: "กิจกรรมที่ดำเนินงานอยู่",
+                        icon: Icon(Icons.event_available)),
                     // Tab(text: "Create Event", icon: Icon(Icons.add)),
                     Tab(
-                        text: "Event Attendance",
+                        text: "ประวัติการเข้าร่วมกิจกรรม",
                         icon: Icon(Icons.play_for_work_outlined))
                   ]),
-                  backgroundColor: Color(0xFFFC663C)),
+                  backgroundColor: Color(0xFF876aa4)),
               body: TabBarView(children: [
                 Container(
                   child: Column(children: <Widget>[dataAttendance()]),
@@ -501,7 +504,7 @@ class _HomePageState extends State<HomePage> {
                               ? <Widget>[
                                   Padding(
                                     child: Text(
-                                        "It's seem like you aren't registered any event yet.",
+                                        "ดูเหมือนว่าคุณยังไม่ได้สมัครเข้าร่วมกิจกรรมใดๆ",
                                         style:
                                             TextStyle(color: Colors.black38)),
                                     padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
@@ -510,7 +513,7 @@ class _HomePageState extends State<HomePage> {
                               : <Widget>[
                                   Padding(
                                     child: Text(
-                                      "Now running...",
+                                      "กิจกรรมที่ดำเนินงานอยู่...",
                                     ),
                                     padding: EdgeInsets.fromLTRB(0, 5, 0, 0),
                                   ),
@@ -520,7 +523,7 @@ class _HomePageState extends State<HomePage> {
                                       ? Container(
                                           padding: EdgeInsets.only(top: 2),
                                           child: Text(
-                                              "No event that running right now.",
+                                              "ไม่มีกิจกรรมใดดำเนินงานอยู่ในตอนนี้",
                                               style: TextStyle(
                                                   color: Colors.black38)),
                                         )
@@ -531,7 +534,7 @@ class _HomePageState extends State<HomePage> {
                                   Divider(),
                                   Padding(
                                     child: Text(
-                                      "Coming soon...",
+                                      "เร็วๆนี้...",
                                     ),
                                     padding: EdgeInsets.fromLTRB(0, 5, 0, 0),
                                   ),
@@ -540,7 +543,7 @@ class _HomePageState extends State<HomePage> {
                                       ? Container(
                                           padding: EdgeInsets.only(top: 2),
                                           child: Text(
-                                            "No event here, try to register some event?",
+                                            "ไม่มีกิจกรรมใดดำเนินงานอยู่ในเร็วๆนี้",
                                             style: TextStyle(
                                                 color: Colors.black38),
                                           ),
@@ -552,7 +555,7 @@ class _HomePageState extends State<HomePage> {
                                   Divider(),
                                   Padding(
                                     child: Text(
-                                      "Already finished",
+                                      "เสร็จสิ้นแล้ว",
                                     ),
                                     padding: EdgeInsets.fromLTRB(0, 5, 0, 0),
                                   ),
@@ -562,7 +565,7 @@ class _HomePageState extends State<HomePage> {
                                       ? Container(
                                           padding: EdgeInsets.only(top: 2),
                                           child: Text(
-                                              "No event that already finished yet.",
+                                              "ยังไม่มีกิจกรรมที่ดำเนินงานเสร็จสิ้นแล้ว",
                                               style: TextStyle(
                                                   color: Colors.black38)),
                                         )

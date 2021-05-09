@@ -29,7 +29,7 @@ dependencies:
   shared_preferences:
   path_provider:
   path:
-  image_picker: ^0.7.2
+  image_picker: ^0.7.4
   timeline_tile:
   file_picker: ^1.4.2
   pdf_render:

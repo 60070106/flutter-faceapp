@@ -151,9 +151,9 @@ class _RegisterPageState extends State<RegisterPage> {
                 end: Alignment.bottomRight,
                 stops: [0.0, 0.4, 0.9],
                 colors: [
-                  Color(0xFFFF835F),
-                  Color(0xFFFC663C),
-                  Color(0xFFFF3F1A),
+                  Color(0xFFbd9dc2),
+                    Color(0xFF876aa4),
+                    Color(0xFF400643),
                 ],
               ),
             ),

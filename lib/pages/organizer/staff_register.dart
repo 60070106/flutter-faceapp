@@ -21,13 +21,13 @@ class _OrganizerEventDetailPageState extends State<OrganizerEventDetailPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Event Detail"),
+        title: Text("รายละเอียดกิจกรรม"),
+        backgroundColor: Color(0xFF876aa4),
       ),
       body: Container(
           child: SingleChildScrollView(
               child: Column(
         children: [
-          Padding(padding: EdgeInsets.fromLTRB(0, 10, 0, 0)),
           Center(
             child: Image.memory(
               base64.decode(widget.data['event_image']),

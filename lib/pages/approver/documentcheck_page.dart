@@ -154,18 +154,22 @@ class _DocumentCheckPageState extends State<DocumentCheckPage> {
                                                             borderRadius: BorderRadius.only(
                                                                 topRight: Radius
                                                                     .circular(
-                                                                        8),
+                                                                        20),
                                                                 bottomRight:
                                                                     Radius
                                                                         .circular(
-                                                                            8)),
+                                                                            20)),
                                                             child: Container(
                                                               width: MediaQuery.of(
                                                                           context)
                                                                       .size
                                                                       .width *
                                                                   0.4,
-                                                              height: 180,
+                                                              height: MediaQuery.of(
+                                                                              context)
+                                                                          .size
+                                                                          .height *
+                                                                      0.2639,
                                                               child:
                                                                   Image.memory(
                                                                 base64.decode(widget
@@ -205,6 +209,8 @@ class _DocumentCheckPageState extends State<DocumentCheckPage> {
   }
 
   Widget checkedEvent() {
+    _checkedEvent = [];
+
     for (var i = 0; i < widget.data.length; i++) {
       if (widget.data[i]['approved_by'] == widget.user['username']) {
         _checkedEvent.add(widget.data[i]);
@@ -343,18 +349,22 @@ class _DocumentCheckPageState extends State<DocumentCheckPage> {
                                                             borderRadius: BorderRadius.only(
                                                                 topRight: Radius
                                                                     .circular(
-                                                                        8),
+                                                                        20),
                                                                 bottomRight:
                                                                     Radius
                                                                         .circular(
-                                                                            8)),
+                                                                            20)),
                                                             child: Container(
                                                               width: MediaQuery.of(
                                                                           context)
                                                                       .size
                                                                       .width *
                                                                   0.4,
-                                                              height: 180,
+                                                              height: MediaQuery.of(
+                                                                              context)
+                                                                          .size
+                                                                          .height *
+                                                                      0.2639,
                                                               child:
                                                                   Image.memory(
                                                                 base64.decode(_checkedEvent[
@@ -398,7 +408,8 @@ class _DocumentCheckPageState extends State<DocumentCheckPage> {
             length: 2,
             child: Scaffold(
               appBar: AppBar(
-                  title: Text("Document Checking"),
+                  title: Text("ส่วนตรวจสอบเอกสาร"),
+                  backgroundColor: Color(0xFF876aa4),
                   actions: <Widget>[
                     IconButton(
                         icon: const Icon(Icons.refresh),
@@ -421,10 +432,10 @@ class _DocumentCheckPageState extends State<DocumentCheckPage> {
                   ],
                   bottom:
                       TabBar(indicatorColor: Colors.amberAccent, tabs: <Tab>[
-                    Tab(text: "All Event", icon: Icon(Icons.event)),
+                    Tab(text: "กิจกรรมทั้งหมด", icon: Icon(Icons.event)),
                     // Tab(text: "Create Event", icon: Icon(Icons.add)),
                     Tab(
-                        text: "Checked Event",
+                        text: "กิจกรรมที่ตรวจสอบแล้ว",
                         icon: Icon(Icons.play_for_work_outlined))
                   ])),
               body: TabBarView(children: [

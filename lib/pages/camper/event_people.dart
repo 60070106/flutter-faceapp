@@ -22,13 +22,14 @@ class _EventPeoplePageState extends State<EventPeoplePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Event Information"),
+        title: Text("ข้อมูลกิจกรรม"),
+        backgroundColor: Color(0xFF876aa4),
       ),
       body: Container(
           child: SingleChildScrollView(
               child: Column(
         children: <Widget>[
-          Padding(padding: EdgeInsets.fromLTRB(0, 10, 0, 0)),
+          Padding(padding: EdgeInsets.fromLTRB(0, 0, 0, 0)),
           Center(
             child: Image.memory(
               base64.decode(widget.event_detail['event_image']),

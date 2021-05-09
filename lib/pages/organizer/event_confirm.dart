@@ -40,7 +40,8 @@ class _EventConfirmPageState extends State<EventConfirmPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text("Confirm your identity"),
+          title: Text("ยืนยันภาพถ่ายใบหน้า"),
+          backgroundColor: Color(0xFF876aa4),
         ),
         body: Center(
             child: Column(
@@ -75,7 +76,7 @@ class _EventConfirmPageState extends State<EventConfirmPage> {
                                 borderRadius: BorderRadius.only(
                                     topRight: Radius.circular(8)),
                                 child: Image(
-                                  fit: BoxFit.fitWidth,
+                                  fit: BoxFit.fill,
                                   image: FileImage(_image),
                                   width:
                                       MediaQuery.of(context).size.width * 0.45,
