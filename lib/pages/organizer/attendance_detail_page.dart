@@ -470,11 +470,12 @@ class _AttendanceDetailPageState extends State<AttendanceDetailPage> {
             child: Scaffold(
               resizeToAvoidBottomInset: false,
               appBar: AppBar(
-                  title: Text("Event detail"),
+                  title: Text("ประวัติการเข้าร่วมกิจกรรม"),
+                  backgroundColor: Color(0xFF876aa4),
                   bottom:
                       TabBar(indicatorColor: Colors.amberAccent, tabs: <Tab>[
-                    Tab(text: "Attandance Detail", icon: Icon(Icons.event)),
-                    Tab(text: "Statistic", icon: Icon(Icons.stacked_bar_chart))
+                    Tab(text: "รายละเอียดการเข้าร่วม", icon: Icon(Icons.event)),
+                    Tab(text: "ข้อมูลเชิงสถิติ", icon: Icon(Icons.stacked_bar_chart))
                   ])),
               body: TabBarView(children: [
                 Center(
@@ -489,6 +490,10 @@ class _AttendanceDetailPageState extends State<AttendanceDetailPage> {
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: ElevatedButton(
+                                  style: ButtonStyle(
+                                        backgroundColor:
+                                            MaterialStateProperty.all<Color>(
+                                                Color(0xFF38855a))),
                                     onPressed: () async {
                                       setState(() {
                                         _Page = 0;
@@ -499,6 +504,10 @@ class _AttendanceDetailPageState extends State<AttendanceDetailPage> {
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: ElevatedButton(
+                                  style: ButtonStyle(
+                                        backgroundColor:
+                                            MaterialStateProperty.all<Color>(
+                                                Color(0xFF854138))),
                                     onPressed: () async {
                                       setState(() {
                                         _Page = 1;
