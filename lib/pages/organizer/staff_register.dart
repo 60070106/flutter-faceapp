@@ -38,7 +38,7 @@ class _OrganizerEventDetailPageState extends State<OrganizerEventDetailPage> {
           Padding(padding: EdgeInsets.fromLTRB(0, 10, 0, 0)),
           Container(
               width: MediaQuery.of(context).size.width * 0.8,
-              height: MediaQuery.of(context).size.height * 0.115,
+              // height: MediaQuery.of(context).size.height * 0.115,
               // color: Colors.grey,
               child: Center(
                 child: Text(

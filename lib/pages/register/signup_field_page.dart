@@ -84,11 +84,11 @@ class _RegisterPageState extends State<RegisterPage> {
 
       var data = {"username": user['username']};
 
-      var resHomepage = await CallApi().getData('event/get_all_event/');
+      var resHomepage = await CallApi().getData('camper_get_all_event/');
       var bodyHomepage = json.decode(resHomepage.body);
 
       var resDataAttendance =
-          await CallApi().postData(data, 'event/camp/attendance/');
+          await CallApi().postData(data, 'event_camp_attendance/');
       var bodyDataAttendance = json.decode(resDataAttendance.body);
 
       localStorage.setString('data', json.encode(bodyHomepage));
@@ -273,7 +273,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                   textInputAction: TextInputAction.next,
                                   inputFormatters: <TextInputFormatter>[
                                     FilteringTextInputFormatter.allow(
-                                        RegExp(r'[a-zA-Z]'))
+                                        RegExp(r'[ก-๛a-zA-Z]'))
                                   ],
                                   validator: (value) {
                                     if (value == null || value.isEmpty) {
@@ -301,7 +301,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                   textInputAction: TextInputAction.next,
                                   inputFormatters: <TextInputFormatter>[
                                     FilteringTextInputFormatter.allow(
-                                        RegExp(r'[a-zA-Z]'))
+                                        RegExp(r'[ก-๛a-zA-Z]'))
                                   ],
                                   validator: (value) {
                                     if (value == null || value.isEmpty) {
