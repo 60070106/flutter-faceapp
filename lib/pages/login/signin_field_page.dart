@@ -274,7 +274,7 @@ class _LogInPageState extends State<LogInPage> {
                 builder: (context) => DocumentCheckPage(
                     data: body_approver, user: userApprover)));
       }
-    } else if (body['success'] = false) {
+    } else if (body['success'] == false) {
       _showMsg(body['detail']);
     }
 

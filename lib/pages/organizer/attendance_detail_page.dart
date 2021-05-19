@@ -61,12 +61,6 @@ class _AttendanceDetailPageState extends State<AttendanceDetailPage> {
   }
 
   Widget dataAttendance() {
-    print(int.parse(
-        widget.data['checkInPerday']['date'][0].toString().substring(0, 4)));
-    print(int.parse(
-        widget.data['checkInPerday']['date'][0].toString().substring(5, 7)));
-    print(int.parse(
-        widget.data['checkInPerday']['date'][0].toString().substring(8, 10)));
     return (_Page == 0)
         ? Expanded(
             child: widget.data['checkInData'] != null

@@ -45,7 +45,7 @@ class _EventRegisterPageState extends State<EventRegisterPage> {
                 Padding(padding: EdgeInsets.fromLTRB(0, 10, 0, 0)),
                 Container(
                     width: MediaQuery.of(context).size.width * 0.8,
-                    height: MediaQuery.of(context).size.height * 0.115,
+                    // height: MediaQuery.of(context).size.height * 0.115,
                     // color: Colors.grey,
                     child: Center(
                       child: Text(
@@ -167,7 +167,6 @@ class _EventRegisterPageState extends State<EventRegisterPage> {
 
                                             setState(() {
                                               _isLoading = true;
-                                              print("click register...");
                                             });
 
                                             var data = {
@@ -176,13 +175,9 @@ class _EventRegisterPageState extends State<EventRegisterPage> {
                                               "username": user['username'],
                                             };
 
-                                            print(data);
-
                                             var res = await CallApi().postData(
                                                 data, 'event_camp_register/');
                                             var body = jsonDecode(res.body);
-
-                                            print(body);
 
                                             if (body['success']) {
                                               var campRes = await CallApi()

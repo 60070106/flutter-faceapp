@@ -10,6 +10,7 @@ class CallApi{
 
   postData(data, apiUrl) async {
     var fullUrl = _url + apiUrl;
+    print(fullUrl);
     // var fullUrl = _url + apiUrl + await _getToken();
     // 
     // print(fullUrl);
