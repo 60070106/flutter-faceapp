@@ -296,24 +296,18 @@ class _OrganizerPageState extends State<OrganizerPage> {
                                                 var user =
                                                     json.decode(userJson);
 
-                                                if (user['username'] ==
-                                                    widget.data[index]
-                                                            ['organizer']
-                                                        ['first_name']) {
-                                                  print("owner clicked");
-                                                } else {
                                                   Navigator.push(
                                                     context,
                                                     MaterialPageRoute(
                                                         builder: (context) =>
                                                             OrganizerEventDetailPage(
+                                                                username: user['username'],
                                                                 data:
                                                                     widget.data[
                                                                         index])
                                                         // builder: (context) => TestMyApp(),
                                                         ),
                                                   );
-                                                }
                                               }),
                                         )
                                       ],
@@ -497,27 +491,17 @@ class _OrganizerPageState extends State<OrganizerPage> {
                                                           var user = json
                                                               .decode(userJson);
 
-                                                          if (user[
-                                                                  'username'] ==
-                                                              _availiable[index]
-                                                                      [
-                                                                      'organizer']
-                                                                  [
-                                                                  'first_name']) {
-                                                            print(
-                                                                "owner clicked");
-                                                          } else {
                                                             Navigator.push(
                                                               context,
                                                               MaterialPageRoute(
                                                                   builder: (context) =>
                                                                       OrganizerEventDetailPage(
+                                                                          username: user['username'],
                                                                           data:
                                                                               _availiable[index])
                                                                   // builder: (context) => TestMyApp(),
                                                                   ),
                                                             );
-                                                          }
                                                         }),
                                                   )
                                                 ],
@@ -681,27 +665,17 @@ class _OrganizerPageState extends State<OrganizerPage> {
                                                                   json.decode(
                                                                       userJson);
 
-                                                              if (user[
-                                                                      'username'] ==
-                                                                  _unavailiable[
-                                                                              index]
-                                                                          [
-                                                                          'organizer']
-                                                                      [
-                                                                      'first_name']) {
-                                                                print(
-                                                                    "owner clicked");
-                                                              } else {
                                                                 Navigator.push(
                                                                   context,
                                                                   MaterialPageRoute(
                                                                       builder: (context) =>
                                                                           OrganizerEventDetailPage(
+                                                                            username: user['username'],
                                                                               data: _unavailiable[index])
                                                                       // builder: (context) => TestMyApp(),
                                                                       ),
                                                                 );
-                                                              }
+                                                              
                                                             }),
                                                       )
                                                     ],

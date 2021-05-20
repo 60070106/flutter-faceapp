@@ -130,7 +130,8 @@ class _EditEventPageState extends State<EditEventPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Event edition"),
+        title: Text("แก้ไขรายละเอียดกิจกรรม"),
+        backgroundColor: Color(0xFF876aa4),
       ),
       body: Center(
         child: Expanded(
@@ -409,7 +410,7 @@ class _EditEventPageState extends State<EditEventPage> {
                                 padding: EdgeInsets.only(
                                     top: 8, bottom: 8, left: 10, right: 10),
                                 child: Text(
-                                  _loading ? 'Editing...' : 'Edit Event',
+                                  _loading ? 'กำลังอัพโหลด...' : 'ยืนยันการแก้ไขกิจกรรม',
                                   textDirection: TextDirection.ltr,
                                   style: TextStyle(
                                     color: Colors.white,

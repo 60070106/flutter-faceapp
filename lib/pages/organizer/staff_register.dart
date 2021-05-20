@@ -8,8 +8,9 @@ import 'package:timeline_tile/timeline_tile.dart';
 import 'attendance_detail_page.dart';
 
 class OrganizerEventDetailPage extends StatefulWidget {
+  var username;
   var data;
-  OrganizerEventDetailPage({this.data});
+  OrganizerEventDetailPage({this.username, this.data});
 
   @override
   _OrganizerEventDetailPageState createState() =>
@@ -200,7 +201,8 @@ class _OrganizerEventDetailPageState extends State<OrganizerEventDetailPage> {
                                           : widget.data['approved_by'] == 'none'
                                               ? Text(
                                                   "ตรวจสอบรายละเอียด\nและเอกสารที่เกี่ยวข้อง")
-                                              : Card(
+                                              : widget.username == widget.data['organizer']['username']
+                                                ? Card(
                                                   child: Padding(
                                                     padding:
                                                         const EdgeInsets.all(
@@ -281,6 +283,8 @@ class _OrganizerEventDetailPageState extends State<OrganizerEventDetailPage> {
                                                     ),
                                                   ),
                                                 )
+                                                : Text("เอกสารและรายละเอียด\nต้องได้รับการแก้ไข")
+                                              
                                     ],
                                   ),
                                 ),
