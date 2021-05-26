@@ -740,8 +740,9 @@ class _OrganizerPageState extends State<OrganizerPage> {
                                 child: ElevatedButton(
                                     style: ButtonStyle(
                                         backgroundColor:
-                                            MaterialStateProperty.all<Color>(
-                                                Color(0xFF6b6272))),
+                                            _Page == 0
+                                            ? MaterialStateProperty.all<Color>(Color(0xFFD2CFD4))
+                                            : MaterialStateProperty.all<Color>(Color(0xFF6b6272))),
                                     onPressed: () async {
                                       setState(() {
                                         _availiable = [];
@@ -757,8 +758,9 @@ class _OrganizerPageState extends State<OrganizerPage> {
                                 child: ElevatedButton(
                                     style: ButtonStyle(
                                         backgroundColor:
-                                            MaterialStateProperty.all<Color>(
-                                                Color(0xFF6b6272))),
+                                            _Page == 1 
+                                            ? MaterialStateProperty.all<Color>(Color(0xFFD2CFD4))
+                                            : MaterialStateProperty.all<Color>(Color(0xFF6b6272))),
                                     onPressed: () async {
                                       setState(() {
                                         _availiable = [];
@@ -774,8 +776,9 @@ class _OrganizerPageState extends State<OrganizerPage> {
                                 child: ElevatedButton(
                                     style: ButtonStyle(
                                         backgroundColor:
-                                            MaterialStateProperty.all<Color>(
-                                                Color(0xFF6b6272))),
+                                            _Page == 2
+                                            ? MaterialStateProperty.all<Color>(Color(0xFFD2CFD4))
+                                            : MaterialStateProperty.all<Color>(Color(0xFF6b6272))),
                                     onPressed: () async {
                                       setState(() {
                                         _availiable = [];
